@@ -214,6 +214,27 @@ class SettingsServiceTest extends TestCase {
 		$this->assertSame($currentYear, $saved->getQuoteNumberCounterYear(), 'quote counter year anchored to current year');
 	}
 
+	/**
+	 * Mahnabstand: frei waehlbar, weil Zahlungsziele je Kunde verhandelt sind —
+	 * aber ein Abstand von 0 Tagen wuerde jede ueberfaellige Rechnung sofort auf
+	 * die hoechste Stufe heben, deshalb die Untergrenze 1.
+	 */
+	public function testDunningIntervalIsStoredAndClampedToAtLeastOneDay(): void {
+		$this->mapper->method('findByOwner')->willReturn($this->existing());
+		$this->mapper->method('update')->willReturnArgument(0);
+
+		$this->assertSame(10, $this->service->save(['dunningIntervalDays' => 10])->getDunningIntervalDays());
+		$this->assertSame(1, $this->service->save(['dunningIntervalDays' => 0])->getDunningIntervalDays());
+	}
+
+	/** Leeres Feld heisst "keine Vorgabe" — DunningService faellt dann auf 7 Tage zurueck. */
+	public function testEmptyDunningIntervalClearsTheSetting(): void {
+		$this->mapper->method('findByOwner')->willReturn($this->existing());
+		$this->mapper->method('update')->willReturnArgument(0);
+
+		$this->assertNull($this->service->save(['dunningIntervalDays' => ''])->getDunningIntervalDays());
+	}
+
 	private function existing(): Settings {
 		$settings = new Settings();
 		$settings->setOwnerUserId('alice');

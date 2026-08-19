@@ -468,7 +468,9 @@
 		"Stornobelege können nicht dupliziert werden.": "Cancellation documents cannot be duplicated.",
 		"Textbaustein nicht gefunden.": "Text snippet not found.",
 		"Mahnstufe %1$d vorgeschlagen: Rechnung %2$s ist überfällig": "Dunning level %1$d proposed: invoice %2$s is overdue",
-		"Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren.": "Invoice %1$s has passed its payment term. Review it and set a dunning level or mark it as paid."
+		"Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren.": "Invoice %1$s has passed its payment term. Review it and set a dunning level or mark it as paid.",
+		"Mahnabstand (Tage)": "Dunning interval (days)",
+		"Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage.": "Interval between dunning levels, counted from each invoice's own due date. The daily dunning run proposes a level accordingly — nothing is ever sent automatically. Leave empty for 7 days."
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

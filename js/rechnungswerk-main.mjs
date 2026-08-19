@@ -7199,13 +7199,13 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 }, dv = ["placeholder"], fv = { class: "rw-hint" }, pv = {
 	key: 1,
 	class: "rw-field tax-rate-field"
-}, mv = ["value"], hv = { class: "rw-section" }, gv = { class: "rw-field rw-field--narrow" }, _v = { class: "rw-hint" }, vv = { class: "rw-section" }, yv = { class: "rw-field" }, bv = { class: "rw-hint" }, xv = { class: "rw-form-row" }, Sv = { class: "rw-field" }, Cv = { class: "rw-field" }, wv = { class: "rw-section" }, Tv = { class: "rw-field" }, Ev = { class: "rw-archive-folder" }, Dv = {
+}, mv = ["value"], hv = { class: "rw-section" }, gv = { class: "rw-field rw-field--narrow" }, _v = { class: "rw-hint" }, vv = { class: "rw-field rw-field--narrow" }, yv = { class: "rw-hint" }, bv = { class: "rw-section" }, xv = { class: "rw-field" }, Sv = { class: "rw-hint" }, Cv = { class: "rw-form-row" }, wv = { class: "rw-field" }, Tv = { class: "rw-field" }, Ev = { class: "rw-section" }, Dv = { class: "rw-field" }, Ov = { class: "rw-archive-folder" }, kv = {
 	key: 0,
 	class: "rw-archive-folder__path"
-}, Ov = {
+}, Av = {
 	key: 1,
 	class: "rw-archive-folder__empty"
-}, kv = { class: "rw-field" }, Av = ["placeholder"], jv = { class: "rw-hint" }, Mv = { class: "rw-section" }, Nv = { class: "rw-hint" }, Pv = { class: "rw-form-row" }, Fv = { class: "rw-field" }, Iv = { class: "rw-field rw-field--narrow" }, Lv = { class: "rw-field rw-field--narrow" }, Rv = { value: "none" }, zv = { class: "rw-form-row" }, Bv = { class: "rw-field" }, Vv = { class: "rw-field" }, Hv = ["placeholder"], Uv = { class: "smtp-test" }, Wv = { class: "rw-section" }, Gv = { class: "rw-hint" }, Kv = { class: "rw-form-row" }, qv = { class: "rw-field" }, Jv = { class: "rw-field rw-field--narrow" }, Yv = { class: "rw-field rw-field--narrow" }, Xv = { class: "rw-form-row" }, Zv = { class: "rw-field" }, Qv = { class: "rw-field" }, $v = ["placeholder"], ey = { class: "rw-section" }, ty = { class: "rw-hint" }, ny = { class: "rw-section" }, ry = { class: "rw-hint rw-access-intro" }, iy = { class: "rw-access-group" }, ay = { class: "rw-access-label" }, oy = { class: "rw-hint rw-access-desc" }, sy = { class: "rw-access-group" }, cy = { class: "rw-access-label" }, ly = { class: "rw-hint rw-access-desc" }, uy = { class: "rw-action-bar" }, dy = [
+}, jv = { class: "rw-field" }, Mv = ["placeholder"], Nv = { class: "rw-hint" }, Pv = { class: "rw-section" }, Fv = { class: "rw-hint" }, Iv = { class: "rw-form-row" }, Lv = { class: "rw-field" }, Rv = { class: "rw-field rw-field--narrow" }, zv = { class: "rw-field rw-field--narrow" }, Bv = { value: "none" }, Vv = { class: "rw-form-row" }, Hv = { class: "rw-field" }, Uv = { class: "rw-field" }, Wv = ["placeholder"], Gv = { class: "smtp-test" }, Kv = { class: "rw-section" }, qv = { class: "rw-hint" }, Jv = { class: "rw-form-row" }, Yv = { class: "rw-field" }, Xv = { class: "rw-field rw-field--narrow" }, Zv = { class: "rw-field rw-field--narrow" }, Qv = { class: "rw-form-row" }, $v = { class: "rw-field" }, ey = { class: "rw-field" }, ty = ["placeholder"], ny = { class: "rw-section" }, ry = { class: "rw-hint" }, iy = { class: "rw-section" }, ay = { class: "rw-hint rw-access-intro" }, oy = { class: "rw-access-group" }, sy = { class: "rw-access-label" }, cy = { class: "rw-hint rw-access-desc" }, ly = { class: "rw-access-group" }, uy = { class: "rw-access-label" }, dy = { class: "rw-hint rw-access-desc" }, fy = { class: "rw-action-bar" }, py = [
 	{
 		path: "/",
 		redirect: { name: "invoices" }
@@ -7352,6 +7352,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 						smallBusinessNote: e.smallBusinessNote,
 						defaultTaxRateBp: e.defaultTaxRateBp,
 						defaultPaymentTermDays: e.defaultPaymentTermDays,
+						dunningIntervalDays: e.dunningIntervalDays,
 						datevUploadMail: e.datevUploadMail,
 						datevAutoSend: e.datevAutoSend,
 						smtpFromName: e.smtpFromName,
@@ -7639,12 +7640,12 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 								_: 1
 							})) : w("", !0)])]),
 							R("div", B_, [
-								R("table", V_, [R("thead", null, [R("tr", { style: v(re.value) }, [...t[40] ||= [
+								R("table", V_, [R("thead", null, [R("tr", { style: v(re.value) }, [...t[41] ||= [
 									R("th", null, "Beschreibung", -1),
 									R("th", { class: "num" }, "Menge", -1),
 									R("th", { class: "num" }, "Einzelpreis", -1),
 									R("th", { class: "num" }, "Betrag", -1)
-								]], 4)]), t[41] ||= R("tbody", null, [R("tr", null, [
+								]], 4)]), t[42] ||= R("tbody", null, [R("tr", null, [
 									R("td", null, "Beratungsleistung"),
 									R("td", { class: "num" }, "2"),
 									R("td", { class: "num" }, "95,00 €"),
@@ -7687,7 +7688,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 							}, null, 512), [[E, i.value.numberFormat]])]),
 							R("p", Q_, [
 								O(n(J(f)("rechnungswerk", "Platzhalter: {YYYY} Jahr, {YY} Jahr 2-stellig, {MM} Monat, {DD} Tag, {####} fortlaufender Zähler.")) + " ", 1),
-								t[42] ||= R("br", null, null, -1),
+								t[43] ||= R("br", null, null, -1),
 								O(" " + n(J(f)("rechnungswerk", "Vorschau: {preview}", { preview: fe.value })), 1)
 							]),
 							R("div", $_, [
@@ -7725,7 +7726,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 							}, null, 512), [[E, i.value.quoteNumberFormat]])]),
 							R("p", rv, [
 								O(n(J(f)("rechnungswerk", "Eigener, von den Rechnungen unabhängiger Nummernkreis. Platzhalter: {YYYY} Jahr, {YY} Jahr 2-stellig, {MM} Monat, {DD} Tag, {####} fortlaufender Zähler.")) + " ", 1),
-								t[43] ||= R("br", null, null, -1),
+								t[44] ||= R("br", null, null, -1),
 								O(" " + n(J(f)("rechnungswerk", "Vorschau: {preview}", { preview: U.value })), 1)
 							]),
 							R("div", iv, [
@@ -7762,7 +7763,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 							}, null, 512), [[E, i.value.fileNameFormat]])]),
 							R("p", cv, [
 								O(n(J(f)("rechnungswerk", "Gilt für Download, Kundenmail und DATEV-Mail. Platzhalter: {nummer} Rechnungsnummer, {YYYY}/{MM}/{DD} Rechnungsdatum, {kunde} Kundenname, {typ} Rechnung/Storno. {nummer} ist Pflicht.")) + " ", 1),
-								t[44] ||= R("br", null, null, -1),
+								t[45] ||= R("br", null, null, -1),
 								O(" " + n(J(f)("rechnungswerk", "Vorschau: {preview}", { preview: pe.value })), 1)
 							])
 						]),
@@ -7814,12 +7815,26 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 								void 0,
 								{ number: !0 }
 							]])]),
-							R("p", _v, n(J(f)("rechnungswerk", "Wird bei neuen Rechnungen als Zahlungsziel vorbelegt. Leer lassen für kein Standardziel.")), 1)
+							R("p", _v, n(J(f)("rechnungswerk", "Wird bei neuen Rechnungen als Zahlungsziel vorbelegt. Leer lassen für kein Standardziel.")), 1),
+							R("label", vv, [R("span", null, n(J(f)("rechnungswerk", "Mahnabstand (Tage)")), 1), W(R("input", {
+								"onUpdate:modelValue": t[18] ||= (e) => i.value.dunningIntervalDays = e,
+								class: "rw-input",
+								type: "number",
+								min: "1",
+								step: "1",
+								placeholder: "7"
+							}, null, 512), [[
+								E,
+								i.value.dunningIntervalDays,
+								void 0,
+								{ number: !0 }
+							]])]),
+							R("p", yv, n(J(f)("rechnungswerk", "Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage.")), 1)
 						]),
-						R("section", vv, [
+						R("section", bv, [
 							R("h3", null, n(J(f)("rechnungswerk", "Versand")), 1),
-							R("label", yv, [R("span", null, n(J(f)("rechnungswerk", "DATEV-Upload-Mail")), 1), W(R("input", {
-								"onUpdate:modelValue": t[18] ||= (e) => i.value.datevUploadMail = e,
+							R("label", xv, [R("span", null, n(J(f)("rechnungswerk", "DATEV-Upload-Mail")), 1), W(R("input", {
+								"onUpdate:modelValue": t[19] ||= (e) => i.value.datevUploadMail = e,
 								class: "rw-input",
 								type: "email"
 							}, null, 512), [[E, i.value.datevUploadMail]])]),
@@ -7832,21 +7847,21 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 								default: N(() => [O(n(J(f)("rechnungswerk", "E-Rechnung beim Festschreiben automatisch an DATEV senden")), 1)]),
 								_: 1
 							}, 8, ["modelValue", "disabled"]),
-							R("p", bv, n(J(f)("rechnungswerk", "Sendet bei jedem Festschreiben automatisch eine E-Mail mit der ZUGFeRD-PDF an die DATEV-Upload-Mail.")), 1),
-							R("div", xv, [R("label", Sv, [R("span", null, n(J(f)("rechnungswerk", "Absender-Name")), 1), W(R("input", {
-								"onUpdate:modelValue": t[19] ||= (e) => i.value.smtpFromName = e,
+							R("p", Sv, n(J(f)("rechnungswerk", "Sendet bei jedem Festschreiben automatisch eine E-Mail mit der ZUGFeRD-PDF an die DATEV-Upload-Mail.")), 1),
+							R("div", Cv, [R("label", wv, [R("span", null, n(J(f)("rechnungswerk", "Absender-Name")), 1), W(R("input", {
+								"onUpdate:modelValue": t[20] ||= (e) => i.value.smtpFromName = e,
 								class: "rw-input",
 								type: "text"
-							}, null, 512), [[E, i.value.smtpFromName]])]), R("label", Cv, [R("span", null, n(J(f)("rechnungswerk", "Absender-E-Mail")), 1), W(R("input", {
-								"onUpdate:modelValue": t[20] ||= (e) => i.value.smtpFromEmail = e,
+							}, null, 512), [[E, i.value.smtpFromName]])]), R("label", Tv, [R("span", null, n(J(f)("rechnungswerk", "Absender-E-Mail")), 1), W(R("input", {
+								"onUpdate:modelValue": t[21] ||= (e) => i.value.smtpFromEmail = e,
 								class: "rw-input",
 								type: "email"
 							}, null, 512), [[E, i.value.smtpFromEmail]])])])
 						]),
-						R("section", wv, [
+						R("section", Ev, [
 							R("h3", null, n(J(f)("rechnungswerk", "Ablage in Nextcloud")), 1),
-							R("div", Tv, [R("span", null, n(J(f)("rechnungswerk", "Zielordner")), 1), R("div", Ev, [
-								o.value ? (p(), K("span", Dv, n(o.value), 1)) : (p(), K("span", Ov, n(J(f)("rechnungswerk", "Kein Ordner gewählt")), 1)),
+							R("div", Dv, [R("span", null, n(J(f)("rechnungswerk", "Zielordner")), 1), R("div", Ov, [
+								o.value ? (p(), K("span", kv, n(o.value), 1)) : (p(), K("span", Av, n(J(f)("rechnungswerk", "Kein Ordner gewählt")), 1)),
 								q(J(X), {
 									disabled: c.value,
 									onClick: Ee
@@ -7873,30 +7888,30 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 								default: N(() => [O(n(J(f)("rechnungswerk", "ZUGFeRD-PDF beim Festschreiben automatisch im Zielordner ablegen")), 1)]),
 								_: 1
 							}, 8, ["modelValue", "disabled"]),
-							R("label", kv, [R("span", null, n(J(f)("rechnungswerk", "Unterordner (optional)")), 1), W(R("input", {
-								"onUpdate:modelValue": t[21] ||= (e) => i.value.archiveSubfolder = e,
+							R("label", jv, [R("span", null, n(J(f)("rechnungswerk", "Unterordner (optional)")), 1), W(R("input", {
+								"onUpdate:modelValue": t[22] ||= (e) => i.value.archiveSubfolder = e,
 								class: "rw-input",
 								type: "text",
 								placeholder: J(f)("rechnungswerk", "z. B. {YYYY}")
-							}, null, 8, Av), [[E, i.value.archiveSubfolder]])]),
-							R("p", jv, [
+							}, null, 8, Mv), [[E, i.value.archiveSubfolder]])]),
+							R("p", Nv, [
 								O(n(J(f)("rechnungswerk", "Platzhalter: {YYYY} Jahr, {MM} Monat, {DD} Tag (Rechnungsdatum). Unterordner werden bei Bedarf angelegt. Vorhandene Dateien werden nie überschrieben.")) + " ", 1),
-								t[45] ||= R("br", null, null, -1),
+								t[46] ||= R("br", null, null, -1),
 								O(" " + n(J(f)("rechnungswerk", "Komfort-Ablage für den Team-Zugriff. Kein revisionssicheres Archiv, die GoBD-Archivierung erfolgt über DATEV bzw. Steuerberater.")), 1)
 							])
 						]),
-						R("section", Mv, [
+						R("section", Pv, [
 							R("h3", null, n(J(f)("rechnungswerk", "Eigenes SMTP-Konto (optional)")), 1),
-							R("p", Nv, n(J(f)("rechnungswerk", "Ohne eigenes Konto wird der globale Nextcloud-Mailserver genutzt. Mit eigenem Konto gehen Rechnungs-Mails über diesen Server – nutze ein Konto, das die Absenderadresse besitzt (SPF/DMARC).")), 1),
-							R("div", Pv, [
-								R("label", Fv, [R("span", null, n(J(f)("rechnungswerk", "Server (Host)")), 1), W(R("input", {
-									"onUpdate:modelValue": t[22] ||= (e) => i.value.smtpHost = e,
+							R("p", Fv, n(J(f)("rechnungswerk", "Ohne eigenes Konto wird der globale Nextcloud-Mailserver genutzt. Mit eigenem Konto gehen Rechnungs-Mails über diesen Server – nutze ein Konto, das die Absenderadresse besitzt (SPF/DMARC).")), 1),
+							R("div", Iv, [
+								R("label", Lv, [R("span", null, n(J(f)("rechnungswerk", "Server (Host)")), 1), W(R("input", {
+									"onUpdate:modelValue": t[23] ||= (e) => i.value.smtpHost = e,
 									class: "rw-input",
 									type: "text",
 									placeholder: "smtp.example.com"
 								}, null, 512), [[E, i.value.smtpHost]])]),
-								R("label", Iv, [R("span", null, n(J(f)("rechnungswerk", "Port")), 1), W(R("input", {
-									"onUpdate:modelValue": t[23] ||= (e) => i.value.smtpPort = e,
+								R("label", Rv, [R("span", null, n(J(f)("rechnungswerk", "Port")), 1), W(R("input", {
+									"onUpdate:modelValue": t[24] ||= (e) => i.value.smtpPort = e,
 									class: "rw-input",
 									type: "number",
 									placeholder: "587"
@@ -7906,26 +7921,26 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 									void 0,
 									{ number: !0 }
 								]])]),
-								R("label", Lv, [R("span", null, n(J(f)("rechnungswerk", "Verschlüsselung")), 1), W(R("select", {
-									"onUpdate:modelValue": t[24] ||= (e) => i.value.smtpSecurity = e,
+								R("label", zv, [R("span", null, n(J(f)("rechnungswerk", "Verschlüsselung")), 1), W(R("select", {
+									"onUpdate:modelValue": t[25] ||= (e) => i.value.smtpSecurity = e,
 									class: "rw-input"
 								}, [
-									t[46] ||= R("option", { value: "starttls" }, "STARTTLS", -1),
-									t[47] ||= R("option", { value: "ssl" }, "SSL/TLS", -1),
-									R("option", Rv, n(J(f)("rechnungswerk", "Keine")), 1)
+									t[47] ||= R("option", { value: "starttls" }, "STARTTLS", -1),
+									t[48] ||= R("option", { value: "ssl" }, "SSL/TLS", -1),
+									R("option", Bv, n(J(f)("rechnungswerk", "Keine")), 1)
 								], 512), [[oe, i.value.smtpSecurity]])])
 							]),
-							R("div", zv, [R("label", Bv, [R("span", null, n(J(f)("rechnungswerk", "Benutzer")), 1), W(R("input", {
-								"onUpdate:modelValue": t[25] ||= (e) => i.value.smtpUser = e,
+							R("div", Vv, [R("label", Hv, [R("span", null, n(J(f)("rechnungswerk", "Benutzer")), 1), W(R("input", {
+								"onUpdate:modelValue": t[26] ||= (e) => i.value.smtpUser = e,
 								class: "rw-input",
 								type: "text"
-							}, null, 512), [[E, i.value.smtpUser]])]), R("label", Vv, [R("span", null, n(J(f)("rechnungswerk", "Passwort")), 1), W(R("input", {
-								"onUpdate:modelValue": t[26] ||= (e) => z.value = e,
+							}, null, 512), [[E, i.value.smtpUser]])]), R("label", Uv, [R("span", null, n(J(f)("rechnungswerk", "Passwort")), 1), W(R("input", {
+								"onUpdate:modelValue": t[27] ||= (e) => z.value = e,
 								class: "rw-input",
 								type: "password",
 								placeholder: i.value.smtpPasswordSet ? J(f)("rechnungswerk", "•••••••• (gespeichert, leer lassen)") : ""
-							}, null, 8, Hv), [[E, z.value]])])]),
-							R("div", Uv, [q(J(X), {
+							}, null, 8, Wv), [[E, z.value]])])]),
+							R("div", Gv, [q(J(X), {
 								disabled: !i.value.smtpHost || se.value,
 								onClick: je
 							}, {
@@ -7936,18 +7951,18 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 								class: D(["smtp-test__result", le.value ? "rw-ok" : "rw-err"])
 							}, n(ce.value), 3)) : w("", !0)])
 						]),
-						R("section", Wv, [
+						R("section", Kv, [
 							R("h3", null, n(J(f)("rechnungswerk", "DATEV-Rückmeldung (IMAP, optional)")), 1),
-							R("p", Gv, n(J(f)("rechnungswerk", "DATEV bestätigt hochgeladene Belege per Antwort-Mail an die Absenderadresse. Mit diesem IMAP-Konto wird das Postfach periodisch geprüft und der Status (gesendet → bestätigt) automatisch gesetzt. In der Regel dasselbe Postfach wie der SMTP-Absender.")), 1),
-							R("div", Kv, [
-								R("label", qv, [R("span", null, n(J(f)("rechnungswerk", "Server (Host)")), 1), W(R("input", {
-									"onUpdate:modelValue": t[27] ||= (e) => i.value.imapHost = e,
+							R("p", qv, n(J(f)("rechnungswerk", "DATEV bestätigt hochgeladene Belege per Antwort-Mail an die Absenderadresse. Mit diesem IMAP-Konto wird das Postfach periodisch geprüft und der Status (gesendet → bestätigt) automatisch gesetzt. In der Regel dasselbe Postfach wie der SMTP-Absender.")), 1),
+							R("div", Jv, [
+								R("label", Yv, [R("span", null, n(J(f)("rechnungswerk", "Server (Host)")), 1), W(R("input", {
+									"onUpdate:modelValue": t[28] ||= (e) => i.value.imapHost = e,
 									class: "rw-input",
 									type: "text",
 									placeholder: "imap.example.com"
 								}, null, 512), [[E, i.value.imapHost]])]),
-								R("label", Jv, [R("span", null, n(J(f)("rechnungswerk", "Port")), 1), W(R("input", {
-									"onUpdate:modelValue": t[28] ||= (e) => i.value.imapPort = e,
+								R("label", Xv, [R("span", null, n(J(f)("rechnungswerk", "Port")), 1), W(R("input", {
+									"onUpdate:modelValue": t[29] ||= (e) => i.value.imapPort = e,
 									class: "rw-input",
 									type: "number",
 									placeholder: "993"
@@ -7957,52 +7972,52 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 									void 0,
 									{ number: !0 }
 								]])]),
-								R("label", Yv, [R("span", null, n(J(f)("rechnungswerk", "Verschlüsselung")), 1), W(R("select", {
-									"onUpdate:modelValue": t[29] ||= (e) => i.value.imapSecurity = e,
+								R("label", Zv, [R("span", null, n(J(f)("rechnungswerk", "Verschlüsselung")), 1), W(R("select", {
+									"onUpdate:modelValue": t[30] ||= (e) => i.value.imapSecurity = e,
 									class: "rw-input"
-								}, [...t[48] ||= [
+								}, [...t[49] ||= [
 									R("option", { value: "ssl" }, "SSL/TLS", -1),
 									R("option", { value: "starttls" }, "STARTTLS", -1),
 									R("option", { value: "tls" }, "TLS", -1)
 								]], 512), [[oe, i.value.imapSecurity]])])
 							]),
-							R("div", Xv, [R("label", Zv, [R("span", null, n(J(f)("rechnungswerk", "Benutzer")), 1), W(R("input", {
-								"onUpdate:modelValue": t[30] ||= (e) => i.value.imapUser = e,
+							R("div", Qv, [R("label", $v, [R("span", null, n(J(f)("rechnungswerk", "Benutzer")), 1), W(R("input", {
+								"onUpdate:modelValue": t[31] ||= (e) => i.value.imapUser = e,
 								class: "rw-input",
 								type: "text"
-							}, null, 512), [[E, i.value.imapUser]])]), R("label", Qv, [R("span", null, n(J(f)("rechnungswerk", "Passwort")), 1), W(R("input", {
-								"onUpdate:modelValue": t[31] ||= (e) => B.value = e,
+							}, null, 512), [[E, i.value.imapUser]])]), R("label", ey, [R("span", null, n(J(f)("rechnungswerk", "Passwort")), 1), W(R("input", {
+								"onUpdate:modelValue": t[32] ||= (e) => B.value = e,
 								class: "rw-input",
 								type: "password",
 								placeholder: i.value.imapPasswordSet ? J(f)("rechnungswerk", "•••••••• (gespeichert, leer lassen)") : ""
-							}, null, 8, $v), [[E, B.value]])])]),
+							}, null, 8, ty), [[E, B.value]])])]),
 							q(J(bt), {
 								modelValue: i.value.imapCleanup,
 								disabled: !i.value.imapHost,
-								"onUpdate:modelValue": t[32] ||= (e) => i.value.imapCleanup = e
+								"onUpdate:modelValue": t[33] ||= (e) => i.value.imapCleanup = e
 							}, {
 								default: N(() => [O(n(J(f)("rechnungswerk", "Bestätigte DATEV-Quittungen nach Verarbeitung in den Papierkorb verschieben (nur eigene, bestätigte Mails)")), 1)]),
 								_: 1
 							}, 8, ["modelValue", "disabled"])
 						]),
-						R("section", ey, [
+						R("section", ny, [
 							R("h3", null, n(J(f)("rechnungswerk", "Standardtexte")), 1),
-							R("p", ty, n(J(f)("rechnungswerk", "Anrede-, Einleitungs- und Schlusstexte werden jetzt als Textbausteine verwaltet – getrennt für Rechnungen und Angebote, mit mehreren Vorlagen je Textbereich.")), 1),
+							R("p", ry, n(J(f)("rechnungswerk", "Anrede-, Einleitungs- und Schlusstexte werden jetzt als Textbausteine verwaltet – getrennt für Rechnungen und Angebote, mit mehreren Vorlagen je Textbereich.")), 1),
 							q(J(X), { onClick: a }, {
 								icon: N(() => [q(Za, { size: 20 })]),
 								default: N(() => [O(" " + n(J(f)("rechnungswerk", "Textbausteine verwalten")), 1)]),
 								_: 1
 							})
 						]),
-						R("section", ny, [
+						R("section", iy, [
 							R("h3", null, n(J(f)("rechnungswerk", "Zugriff & Administration")), 1),
-							R("p", ry, n(J(f)("rechnungswerk", "Lege fest, wer RechnungsWerk nutzen darf. Nextcloud-Server-Administratoren sind immer Admin.")), 1),
-							R("div", iy, [
-								R("span", ay, n(J(f)("rechnungswerk", "App-Administratoren")), 1),
-								R("p", oy, n(J(f)("rechnungswerk", "Dürfen Firmendaten, Nummernkreis, DATEV und den Zugriff festlegen.")), 1),
+							R("p", ay, n(J(f)("rechnungswerk", "Lege fest, wer RechnungsWerk nutzen darf. Nextcloud-Server-Administratoren sind immer Admin.")), 1),
+							R("div", oy, [
+								R("span", sy, n(J(f)("rechnungswerk", "App-Administratoren")), 1),
+								R("p", cy, n(J(f)("rechnungswerk", "Dürfen Firmendaten, Nummernkreis, DATEV und den Zugriff festlegen.")), 1),
 								q(J(pt), {
 									modelValue: A.value,
-									"onUpdate:modelValue": t[33] ||= (e) => A.value = e,
+									"onUpdate:modelValue": t[34] ||= (e) => A.value = e,
 									options: P.value,
 									loading: F.value,
 									multiple: !0,
@@ -8020,12 +8035,12 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 									"placeholder"
 								])
 							]),
-							R("div", sy, [
-								R("span", cy, n(J(f)("rechnungswerk", "Berechtigte Nutzer")), 1),
-								R("p", ly, n(J(f)("rechnungswerk", "Dürfen Rechnungen anlegen, sehen, herunterladen und versenden.")), 1),
+							R("div", ly, [
+								R("span", uy, n(J(f)("rechnungswerk", "Berechtigte Nutzer")), 1),
+								R("p", dy, n(J(f)("rechnungswerk", "Dürfen Rechnungen anlegen, sehen, herunterladen und versenden.")), 1),
 								q(J(pt), {
 									modelValue: M.value,
-									"onUpdate:modelValue": t[34] ||= (e) => M.value = e,
+									"onUpdate:modelValue": t[35] ||= (e) => M.value = e,
 									options: P.value,
 									loading: F.value,
 									multiple: !0,
@@ -8044,7 +8059,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 								])
 							])
 						]),
-						R("div", uy, [q(J(X), {
+						R("div", fy, [q(J(X), {
 							variant: "primary",
 							disabled: J(r).saving || ie.value,
 							onClick: Ae
@@ -8059,7 +8074,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 						name: J(f)("rechnungswerk", "Kleinunternehmer §19 aktivieren"),
 						message: J(f)("rechnungswerk", "Damit werden künftige Rechnungen ohne Umsatzsteuer ausgewiesen (§19 UStG). Bestehende festgeschriebene Rechnungen bleiben unverändert. Fortfahren?"),
 						confirmLabel: J(f)("rechnungswerk", "Aktivieren"),
-						onClose: t[35] ||= (e) => u.value = !1,
+						onClose: t[36] ||= (e) => u.value = !1,
 						onConfirm: ve
 					}, null, 8, [
 						"open",
@@ -8072,7 +8087,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 						name: J(f)("rechnungswerk", "Automatischen DATEV-Versand aktivieren"),
 						message: J(f)("rechnungswerk", "Ab sofort wird bei jedem Festschreiben automatisch eine E-Mail mit der E-Rechnung an die hinterlegte DATEV-Upload-Mail gesendet. Fortfahren?"),
 						confirmLabel: J(f)("rechnungswerk", "Aktivieren"),
-						onClose: t[36] ||= (e) => d.value = !1,
+						onClose: t[37] ||= (e) => d.value = !1,
 						onConfirm: be
 					}, null, 8, [
 						"open",
@@ -8085,7 +8100,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 						name: J(f)("rechnungswerk", "Automatische Ablage aktivieren"),
 						message: J(f)("rechnungswerk", "Ab sofort wird bei jedem Festschreiben die ZUGFeRD-PDF automatisch im gewählten Ordner abgelegt. Alle Personen mit Zugriff auf den Ordner können die Rechnungen sehen. Fortfahren?"),
 						confirmLabel: J(f)("rechnungswerk", "Aktivieren"),
-						onClose: t[37] ||= (e) => m.value = !1,
+						onClose: t[38] ||= (e) => m.value = !1,
 						onConfirm: Se
 					}, null, 8, [
 						"open",
@@ -8098,7 +8113,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 						name: J(f)("rechnungswerk", "Nummernkreis auf „Fortlaufend“ stellen"),
 						message: J(f)("rechnungswerk", "Der Zähler läuft dann dauerhaft weiter und wird nicht mehr jährlich zurückgesetzt. Das Format darf ohne Jahreskomponente auskommen. Der Modus wirkt sich auf alle künftig festgeschriebenen Rechnungen aus. Fortfahren?"),
 						confirmLabel: J(f)("rechnungswerk", "Fortlaufend aktivieren"),
-						onClose: t[38] ||= (e) => h.value = !1,
+						onClose: t[39] ||= (e) => h.value = !1,
 						onConfirm: we
 					}, null, 8, [
 						"open",
@@ -8111,7 +8126,7 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 						name: J(f)("rechnungswerk", "Angebots-Nummernkreis auf „Fortlaufend“ stellen"),
 						message: J(f)("rechnungswerk", "Der Angebots-Zähler läuft dann dauerhaft weiter und wird nicht mehr jährlich zurückgesetzt. Das Format darf ohne Jahreskomponente auskommen. Fortfahren?"),
 						confirmLabel: J(f)("rechnungswerk", "Fortlaufend aktivieren"),
-						onClose: t[39] ||= (e) => g.value = !1,
+						onClose: t[40] ||= (e) => g.value = !1,
 						onConfirm: Te
 					}, null, 8, [
 						"open",
@@ -8121,17 +8136,17 @@ var g_ = { class: "rw-view" }, __ = { class: "rw-settings-title" }, v_ = {
 					])
 				]));
 			}
-		}), [["__scopeId", "data-v-81f38fd1"]])
+		}), [["__scopeId", "data-v-30a6163f"]])
 	}
-], fy = Rr({
+], my = Rr({
 	history: or(),
-	routes: dy
+	routes: py
 });
 //#endregion
 //#region src/main.js
 document.addEventListener("DOMContentLoaded", () => {
 	let e = P(wo);
-	e.use(zt()), e.use(fy), e.use(Te, { themes: { tooltip: { delay: {
+	e.use(zt()), e.use(my), e.use(Te, { themes: { tooltip: { delay: {
 		show: 100,
 		hide: 0
 	} } } }), e.mount(".app-rechnungswerk");

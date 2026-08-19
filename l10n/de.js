@@ -469,6 +469,8 @@ OC.L10N.register(
     "Stornobelege können nicht dupliziert werden." : "Stornobelege können nicht dupliziert werden.",
     "Textbaustein nicht gefunden." : "Textbaustein nicht gefunden.",
     "Mahnstufe %1$d vorgeschlagen: Rechnung %2$s ist überfällig" : "Mahnstufe %1$d vorgeschlagen: Rechnung %2$s ist überfällig",
-    "Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren." : "Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren."
+    "Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren." : "Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren.",
+    "Mahnabstand (Tage)" : "Mahnabstand (Tage)",
+    "Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage." : "Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage."
 },
 "nplurals=2; plural=(n != 1);");

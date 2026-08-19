@@ -240,6 +240,11 @@
 					<input v-model.number="form.defaultPaymentTermDays" class="rw-input" type="number" min="0" step="1" placeholder="14" />
 				</label>
 				<p class="rw-hint">{{ t('rechnungswerk', 'Wird bei neuen Rechnungen als Zahlungsziel vorbelegt. Leer lassen für kein Standardziel.') }}</p>
+				<label class="rw-field rw-field--narrow">
+					<span>{{ t('rechnungswerk', 'Mahnabstand (Tage)') }}</span>
+					<input v-model.number="form.dunningIntervalDays" class="rw-input" type="number" min="1" step="1" placeholder="7" />
+				</label>
+				<p class="rw-hint">{{ t('rechnungswerk', 'Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage.') }}</p>
 			</section>
 
 			<!-- Versand -->
@@ -668,6 +673,7 @@ function hydrate() {
 		smallBusinessNote: s.smallBusinessNote,
 		defaultTaxRateBp: s.defaultTaxRateBp,
 		defaultPaymentTermDays: s.defaultPaymentTermDays,
+		dunningIntervalDays: s.dunningIntervalDays,
 		datevUploadMail: s.datevUploadMail,
 		datevAutoSend: s.datevAutoSend,
 		smtpFromName: s.smtpFromName,

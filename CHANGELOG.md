@@ -16,7 +16,8 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   schlägt per Nextcloud-Notification eine Mahnstufe vor — nie automatischer
   Versand. Der Abstand zwischen den Stufen ist relativ zum individuellen
   Fälligkeitsdatum jeder Rechnung und über eine neue Einstellung
-  `dunningIntervalDays` konfigurierbar (Default 7 Tage). Ein Feld
+  `dunningIntervalDays` konfigurierbar (Einstellungen → Zahlung, Default
+  7 Tage, Minimum 1). Ein Feld
   `dunningNotifiedLevel` verhindert, dass für dieselbe Stufe täglich neu
   benachrichtigt wird.
 - **Mahnstufen-Spalte in der Rechnungsliste:** offene und überfällige

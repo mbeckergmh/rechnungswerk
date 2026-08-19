@@ -282,6 +282,8 @@ export interface Settings {
 	defaultTaxRateBp: number
 	/** Global default payment term in days, pre-fills new invoices (#117). */
 	defaultPaymentTermDays: number | null
+	/** Abstand zwischen den Mahnstufen in Tagen; null = Vorgabe 7 (DunningService). */
+	dunningIntervalDays: number | null
 	datevUploadMail: string | null
 	datevAutoSend: boolean
 	smtpFromName: string | null
