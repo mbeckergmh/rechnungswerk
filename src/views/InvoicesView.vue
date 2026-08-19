@@ -59,6 +59,7 @@
 						<th>{{ t('rechnungswerk', 'Datum') }}</th>
 						<th class="num">{{ t('rechnungswerk', 'Brutto') }}</th>
 						<th class="rw-col-paid">{{ t('rechnungswerk', 'Bezahlt') }}</th>
+						<th class="rw-col-dunning">{{ t('rechnungswerk', 'Mahnstufe') }}</th>
 						<th class="rw-col-actions"></th>
 					</tr>
 				</thead>
@@ -90,6 +91,19 @@
 								@click.stop="togglePaid(inv)">
 								<component :is="inv.paymentStatus === 'paid' ? CheckboxMarkedIcon : CheckboxBlankOutlineIcon" :size="22" />
 							</button>
+						</td>
+						<td class="rw-col-dunning">
+							<select v-if="inv.paymentStatus === 'unpaid' || inv.paymentStatus === 'overdue'"
+								:class="['rw-dunning-select', { 'rw-dunning-select--active': (inv.dunningLevel ?? 0) > 0 }]"
+								:value="inv.dunningLevel ?? 0"
+								:title="dunningTitle(inv)"
+								@click.stop
+								@change="onDunningChange(inv, $event)">
+								<option :value="0">–</option>
+								<option :value="1">{{ t('rechnungswerk', 'Stufe 1') }}</option>
+								<option :value="2">{{ t('rechnungswerk', 'Stufe 2') }}</option>
+								<option :value="3">{{ t('rechnungswerk', 'Stufe 3') }}</option>
+							</select>
 						</td>
 						<td class="rw-col-actions">
 							<div class="rw-actions">
@@ -267,6 +281,24 @@ async function togglePaid(inv: Invoice) {
 		}
 	} catch (e) {
 		error.value = (e as { message?: string }).message ?? t('rechnungswerk', 'Zahlungsstatus konnte nicht geändert werden')
+	}
+}
+
+function dunningTitle(inv: Invoice): string {
+	const level = inv.dunningLevel ?? 0
+	if (level === 0 || !inv.lastDunningAt) {
+		return t('rechnungswerk', 'Noch keine Mahnstufe gesetzt')
+	}
+	return t('rechnungswerk', 'Mahnstufe {level} seit {date}', { level: String(level), date: shortDate(inv.lastDunningAt) })
+}
+
+async function onDunningChange(inv: Invoice, event: Event) {
+	const level = Number((event.target as HTMLSelectElement).value)
+	error.value = ''
+	try {
+		await store.setDunningLevel(inv.id, level)
+	} catch (e) {
+		error.value = (e as { message?: string }).message ?? t('rechnungswerk', 'Mahnstufe konnte nicht gesetzt werden')
 	}
 }
 

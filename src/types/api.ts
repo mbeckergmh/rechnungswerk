@@ -201,6 +201,10 @@ export interface Invoice {
 	paidAt: string | null
 	/** Derived payment status; null for drafts and cancellation documents. */
 	paymentStatus: PaymentStatus | null
+	/** Mahnstufe 0..3 (0 = keine Mahnung), vom DunningProposalJob vorgeschlagen, per API bestätigt. */
+	dunningLevel: number | null
+	/** Datum der zuletzt gesetzten Mahnstufe; null wenn dunningLevel 0 ist. */
+	lastDunningAt: string | null
 	/** Quote validity date ("gültig bis", #111); quotes only. */
 	validUntil: string | null
 	/** Freibleibend/unverbindlich flag (§145 BGB, #111); quotes only. */

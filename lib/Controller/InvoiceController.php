@@ -244,6 +244,29 @@ class InvoiceController extends Controller {
 		}
 	}
 
+	/**
+	 * Mahnstufe setzen (0..3), fuer die Mahnungen-Uebersicht in der eigenen
+	 * UI. Dieselbe Logik wie die OCS-Route (DunningController) — dort fuer
+	 * externe Konsumenten, hier session-/CSRF-basiert wie der Rest dieser
+	 * Klasse, damit der schlanke @/api/client.ts-Wrapper (kein OCS-Envelope)
+	 * unveraendert funktioniert.
+	 */
+	#[NoAdminRequired]
+	public function setDunningLevel(int $id, int $level, ?string $date = null): DataResponse {
+		if (($r = $this->guardEdit()) !== null) {
+			return $r;
+		}
+		try {
+			return new DataResponse($this->invoiceService->setDunningLevel($id, $level, $date));
+		} catch (NotFoundException $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
+		} catch (IllegalStateException $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_CONFLICT);
+		} catch (ValidationException $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
+		}
+	}
+
 	private function guardAccess(): ?DataResponse {
 		if ($this->userId === null) {
 			return new DataResponse(['error' => 'Not authenticated'], Http::STATUS_UNAUTHORIZED);

@@ -16,6 +16,7 @@ import {
 	listInvoices as apiList,
 	markInvoicePaid as apiMarkPaid,
 	markInvoiceUnpaid as apiMarkUnpaid,
+	setInvoiceDunningLevel as apiSetDunningLevel,
 	updateInvoice as apiUpdate,
 	type InvoiceInput,
 } from '@/api/invoices'
@@ -82,5 +83,11 @@ export const useInvoiceStore = defineStore('invoice', () => {
 		return updated
 	}
 
-	return { invoices, loading, fetchAll, get, create, update, remove, commit, cancel, duplicate, markPaid, markUnpaid }
+	async function setDunningLevel(id: number, level: number): Promise<InvoiceDetail> {
+		const updated = await apiSetDunningLevel(id, level)
+		await fetchAll()
+		return updated
+	}
+
+	return { invoices, loading, fetchAll, get, create, update, remove, commit, cancel, duplicate, markPaid, markUnpaid, setDunningLevel }
 })

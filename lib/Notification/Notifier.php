@@ -33,7 +33,8 @@ class Notifier implements INotifier {
 	}
 
 	public function getName(): string {
-		return $this->l10nFactory->get(Application::APP_ID)->t('RechnungsWerk');
+		// Produktname, bewusst nicht durch t() — er ist in jeder Sprache gleich.
+		return 'RechnungsWerk';
 	}
 
 	public function prepare(INotification $notification, string $languageCode): INotification {
@@ -44,15 +45,15 @@ class Notifier implements INotifier {
 			throw new \InvalidArgumentException('Unknown subject');
 		}
 
-		$l = $this->l10nFactory->get(Application::APP_ID, $languageCode);
+		$l10n = $this->l10nFactory->get(Application::APP_ID, $languageCode);
 		$params = $notification->getSubjectParameters();
 		$level = (int)($params['level'] ?? 0);
 		$number = (string)($params['number'] ?? '');
 
 		$notification->setParsedSubject(
-			$l->t('Mahnstufe %1$d vorgeschlagen: Rechnung %2$s ist überfällig', [$level, $number]),
+			$l10n->t('Mahnstufe %1$d vorgeschlagen: Rechnung %2$s ist überfällig', [$level, $number]),
 		)->setParsedMessage(
-			$l->t('Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren.', [$number]),
+			$l10n->t('Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren.', [$number]),
 		)->setIcon($this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath(Application::APP_ID, 'app-dark.svg')));
 
 		return $notification;

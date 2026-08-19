@@ -92,6 +92,10 @@ export const markInvoicePaid = (id: number, date?: string): Promise<InvoiceDetai
 export const markInvoiceUnpaid = (id: number): Promise<InvoiceDetail> =>
 	apiPost<InvoiceDetail, Record<string, never>>(`/invoices/${id}/unpay`, {})
 
+/** Mahnstufe setzen (0..3); 0 löscht die Mahnstufe wieder (kein separater Reset-Endpunkt). */
+export const setInvoiceDunningLevel = (id: number, level: number): Promise<InvoiceDetail> =>
+	apiPatch<InvoiceDetail, { level: number }>(`/invoices/${id}/dunning`, { level })
+
 /** Same-origin URL of the ZUGFeRD PDF for a committed invoice (session-authenticated). */
 export const invoicePdfUrl = (id: number): string =>
 	apiUrl(`/invoices/${id}/pdf`)

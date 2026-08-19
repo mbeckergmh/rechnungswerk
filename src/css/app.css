@@ -271,6 +271,27 @@
 	color: #c0392b;
 }
 
+.app-rechnungswerk .rw-table .rw-col-dunning {
+	width: 92px;
+	text-align: center;
+	vertical-align: middle;
+}
+.app-rechnungswerk .rw-dunning-select {
+	font-size: 12px;
+	font-weight: 600;
+	padding: 4px 6px;
+	border-radius: 6px;
+	border: 1px solid var(--color-border-dark);
+	background: var(--color-main-background);
+	color: var(--color-text-maxcontrast);
+	cursor: pointer;
+}
+.app-rechnungswerk .rw-dunning-select--active {
+	border-color: #c0392b;
+	color: #c0392b;
+	font-weight: 700;
+}
+
 .app-rechnungswerk .rw-amt-overdue {
 	color: #c0392b;
 	font-weight: 600;

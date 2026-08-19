@@ -19,6 +19,11 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   `dunningIntervalDays` konfigurierbar (Default 7 Tage). Ein Feld
   `dunningNotifiedLevel` verhindert, dass für dieselbe Stufe täglich neu
   benachrichtigt wird.
+- **Mahnstufen-Spalte in der Rechnungsliste:** offene und überfällige
+  Rechnungen bekommen ein Auswahlfeld für die Mahnstufe (–/1/2/3), farblich
+  hervorgehoben sobald eine Stufe gesetzt ist, mit dem Datum als Tooltip. Der
+  bestehende „Bezahlt“-Haken räumt die Mahnstufe implizit mit weg, so dass eine
+  bezahlte Rechnung aus dem Mahnlauf verschwindet.
 - **OCS-API** (`/ocs/v2.php/apps/rechnungswerk/api/v1/invoices/dunning`) für
   externe Konsumenten (z. B. ein künftiges Controlling-Dashboard): Rechnungen
   mit Zahlungs-/Mahnstatus auflisten und die Mahnstufe per
