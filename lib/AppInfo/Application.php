@@ -11,6 +11,8 @@ namespace OCA\Rechnungswerk\AppInfo;
 
 use OCA\Rechnungswerk\BackgroundJob\DatevConfirmationJob;
 use OCA\Rechnungswerk\BackgroundJob\DocumentBackfillJob;
+use OCA\Rechnungswerk\BackgroundJob\DunningProposalJob;
+use OCA\Rechnungswerk\Notification\Notifier;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -33,6 +35,7 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function register(IRegistrationContext $context): void {
+		$context->registerNotifierService(Notifier::class);
 	}
 
 	public function boot(IBootContext $context): void {
@@ -44,5 +47,7 @@ class Application extends App implements IBootstrap {
 		// registriert: er faengt auch die seltenen Faelle ein, in denen das
 		// Einfrieren beim Festschreiben fehlschlaegt.
 		$jobList->add(DocumentBackfillJob::class);
+		// Taeglicher Mahnlauf-Vorschlag (Ingenieurbuero-Auftragswesen).
+		$jobList->add(DunningProposalJob::class);
 	}
 }

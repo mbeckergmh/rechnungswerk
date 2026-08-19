@@ -120,6 +120,12 @@ use OCP\DB\Types;
  * @method void setCommittedAt(?\DateTime $committedAt)
  * @method ?\DateTime getPaidAt()
  * @method void setPaidAt(?\DateTime $paidAt)
+ * @method ?int getDunningLevel()
+ * @method void setDunningLevel(?int $dunningLevel)
+ * @method ?\DateTime getLastDunningAt()
+ * @method void setLastDunningAt(?\DateTime $lastDunningAt)
+ * @method ?int getDunningNotifiedLevel()
+ * @method void setDunningNotifiedLevel(?int $dunningNotifiedLevel)
  * @method ?\DateTime getCreatedAt()
  * @method void setCreatedAt(?\DateTime $createdAt)
  * @method ?\DateTime getUpdatedAt()
@@ -197,6 +203,14 @@ class Invoice extends Entity implements JsonSerializable {
 	public const PAYMENT_UNPAID = 'unpaid';
 	public const PAYMENT_OVERDUE = 'overdue';
 	public const PAYMENT_PAID = 'paid';
+
+	/**
+	 * Mahnstufe (Hub-App-Integration): 0 = keine Mahnung, 1..3 = Mahnstufen.
+	 * Stored, not derived — RechnungsWerk selbst entscheidet nicht, wann eine
+	 * Stufe faellig ist, das legt die Hub-App per API fest.
+	 */
+	public const DUNNING_NONE = 0;
+	public const DUNNING_LEVELS = [0, 1, 2, 3];
 
 	/** DATEV hand-off status (fed by the upload-mail confirmation channel, #36). */
 	public const DATEV_PENDING = 'pending';
@@ -281,6 +295,9 @@ class Invoice extends Entity implements JsonSerializable {
 	protected ?string $datevResponseRaw = null;
 	protected ?\DateTime $committedAt = null;
 	protected ?\DateTime $paidAt = null;
+	protected ?int $dunningLevel = null;
+	protected ?\DateTime $lastDunningAt = null;
+	protected ?int $dunningNotifiedLevel = null;
 	protected ?\DateTime $createdAt = null;
 	protected ?\DateTime $updatedAt = null;
 
@@ -338,6 +355,9 @@ class Invoice extends Entity implements JsonSerializable {
 		$this->addType('datevResponseRaw', Types::TEXT);
 		$this->addType('committedAt', Types::DATETIME);
 		$this->addType('paidAt', Types::DATETIME);
+		$this->addType('dunningLevel', Types::SMALLINT);
+		$this->addType('lastDunningAt', Types::DATE);
+		$this->addType('dunningNotifiedLevel', Types::SMALLINT);
 		$this->addType('createdAt', Types::DATETIME);
 		$this->addType('updatedAt', Types::DATETIME);
 	}
@@ -452,6 +472,8 @@ class Invoice extends Entity implements JsonSerializable {
 			'datevStatusAt' => $this->formatDateTime($this->getDatevStatusAt()),
 			'committedAt' => $this->formatDateTime($this->getCommittedAt()),
 			'paidAt' => $this->formatDateTime($this->getPaidAt()),
+			'dunningLevel' => $this->getDunningLevel() ?? self::DUNNING_NONE,
+			'lastDunningAt' => $this->formatDate($this->getLastDunningAt()),
 			'createdAt' => $this->formatDateTime($this->getCreatedAt()),
 			'updatedAt' => $this->formatDateTime($this->getUpdatedAt()),
 		];

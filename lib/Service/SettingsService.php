@@ -185,6 +185,12 @@ class SettingsService {
 			$days = $data['defaultPaymentTermDays'];
 			$settings->setDefaultPaymentTermDays($days !== null && $days !== '' ? max(0, (int)$days) : null);
 		}
+		if (array_key_exists('dunningIntervalDays', $data)) {
+			// Anders als defaultPaymentTermDays (0 = sofort faellig, gueltig) ist
+			// ein 0-Tage-Mahnabstand sinnlos — min. 1.
+			$days = $data['dunningIntervalDays'];
+			$settings->setDunningIntervalDays($days !== null && $days !== '' ? max(1, (int)$days) : null);
+		}
 		if (array_key_exists('smtpPort', $data)) {
 			$settings->setSmtpPort($data['smtpPort'] !== null && $data['smtpPort'] !== '' ? (int)$data['smtpPort'] : null);
 		}

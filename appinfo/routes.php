@@ -90,4 +90,11 @@ return [
 		['name' => 'admin#searchPrincipals',   'url' => '/api/v1/principals/search',   'verb' => 'GET'],
 		['name' => 'admin#testSmtp',           'url' => '/api/v1/smtp/test',           'verb' => 'POST'],
 	],
+
+	// OCS-API fuer externe Konsumenten (Hub-App Ingenieurbuero-Auftragswesen):
+	// Basic-Auth mit App-Passwort statt Session/CSRF, siehe DunningController.
+	'ocs' => [
+		['name' => 'dunning#index',      'url' => '/api/v1/invoices/dunning',     'verb' => 'GET'],
+		['name' => 'dunning#setDunning', 'url' => '/api/v1/invoices/{id}/dunning', 'verb' => 'PATCH'],
+	],
 ];
