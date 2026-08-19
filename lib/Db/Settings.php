@@ -76,6 +76,8 @@ use OCP\DB\Types;
  * @method void setDefaultTaxRateBp(int $defaultTaxRateBp)
  * @method ?int getDefaultPaymentTermDays()
  * @method void setDefaultPaymentTermDays(?int $defaultPaymentTermDays)
+ * @method ?int getDunningIntervalDays()
+ * @method void setDunningIntervalDays(?int $dunningIntervalDays)
  * @method ?string getDatevUploadMail()
  * @method void setDatevUploadMail(?string $datevUploadMail)
  * @method int getDatevAutoSend()
@@ -162,6 +164,7 @@ class Settings extends Entity implements JsonSerializable {
 	protected ?string $smallBusinessNote = null;
 	protected ?int $defaultTaxRateBp = null;
 	protected ?int $defaultPaymentTermDays = null;
+	protected ?int $dunningIntervalDays = null;
 	protected ?string $datevUploadMail = null;
 	protected ?int $datevAutoSend = null;
 	protected ?string $smtpFromName = null;
@@ -214,6 +217,7 @@ class Settings extends Entity implements JsonSerializable {
 		$this->addType('smallBusinessNote', Types::TEXT);
 		$this->addType('defaultTaxRateBp', Types::INTEGER);
 		$this->addType('defaultPaymentTermDays', Types::INTEGER);
+		$this->addType('dunningIntervalDays', Types::INTEGER);
 		$this->addType('datevUploadMail', Types::STRING);
 		$this->addType('datevAutoSend', Types::SMALLINT);
 		$this->addType('smtpFromName', Types::STRING);
@@ -268,6 +272,7 @@ class Settings extends Entity implements JsonSerializable {
 			'smallBusinessNote' => $this->getSmallBusinessNote(),
 			'defaultTaxRateBp' => $this->getDefaultTaxRateBp(),
 			'defaultPaymentTermDays' => $this->getDefaultPaymentTermDays(),
+			'dunningIntervalDays' => $this->getDunningIntervalDays(),
 			'datevUploadMail' => $this->getDatevUploadMail(),
 			'datevAutoSend' => (bool)$this->getDatevAutoSend(),
 			'smtpFromName' => $this->getSmtpFromName(),

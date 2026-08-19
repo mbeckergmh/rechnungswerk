@@ -1017,6 +1017,10 @@ class InvoiceService {
 	 * (default today). Only regular committed invoices are payable — drafts and
 	 * cancellation documents are rejected.
 	 *
+	 * Clears an active Mahnstufe (Hub-App-Integration): eine bezahlte Rechnung
+	 * mit offener Mahnstufe waere ein inkonsistenter Zustand, den sonst jeder
+	 * Aufrufer der Mahnstufen-API selbst aufraeumen muesste.
+	 *
 	 * @return array<string, mixed>
 	 * @throws NotFoundException
 	 * @throws IllegalStateException
@@ -1033,6 +1037,9 @@ class InvoiceService {
 		try {
 			$invoice = $this->assertPayable($this->findByIdForUpdate($id));
 			$invoice->setPaidAt($paidAt);
+			$invoice->setDunningLevel(Invoice::DUNNING_NONE);
+			$invoice->setLastDunningAt(null);
+			$invoice->setDunningNotifiedLevel(Invoice::DUNNING_NONE);
 			$invoice->setUpdatedAt(new DateTime());
 			$this->invoiceMapper->update($invoice);
 			$this->db->commit();
@@ -1058,6 +1065,47 @@ class InvoiceService {
 		try {
 			$invoice = $this->assertPayable($this->findByIdForUpdate($id));
 			$invoice->setPaidAt(null);
+			$invoice->setUpdatedAt(new DateTime());
+			$this->invoiceMapper->update($invoice);
+			$this->db->commit();
+		} catch (\Throwable $e) {
+			$this->db->rollBack();
+			throw $e;
+		}
+		return $this->present($invoice);
+	}
+
+	/**
+	 * Set the Mahnstufe (Hub-App-Integration): storage only, no escalation
+	 * rules. Welche Frist ueberschritten sein muss, um von Stufe 1 auf 2 zu
+	 * gehen, entscheidet die aufrufende Hub-App — RechnungsWerk validiert nur
+	 * den Wertebereich (0..3) und dass die Rechnung ueberhaupt zahlbar ist.
+	 *
+	 * @return array<string, mixed>
+	 * @throws NotFoundException
+	 * @throws IllegalStateException
+	 * @throws ValidationException
+	 */
+	public function setDunningLevel(int $id, int $level, ?string $date = null): array {
+		if (!in_array($level, Invoice::DUNNING_LEVELS, true)) {
+			throw new ValidationException($this->l10n->t('Ungültige Mahnstufe.'));
+		}
+		$this->assertPayable($this->findById($id));
+		$dunningAt = $this->parseDate($date) ?? (function () {
+			$now = new DateTime();
+			$now->setTime(0, 0, 0);
+			return $now;
+		})();
+
+		$this->db->beginTransaction();
+		try {
+			$invoice = $this->assertPayable($this->findByIdForUpdate($id));
+			$invoice->setDunningLevel($level);
+			$invoice->setLastDunningAt($level === Invoice::DUNNING_NONE ? null : $dunningAt);
+			// Eine manuell gesetzte Stufe gilt als "bereits behandelt" — sonst
+			// wuerde der taegliche Job am nächsten Lauf sofort erneut fuer
+			// dieselbe (oder eine niedrigere) Stufe benachrichtigen.
+			$invoice->setDunningNotifiedLevel(max($invoice->getDunningNotifiedLevel() ?? 0, $level));
 			$invoice->setUpdatedAt(new DateTime());
 			$this->invoiceMapper->update($invoice);
 			$this->db->commit();

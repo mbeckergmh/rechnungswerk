@@ -7,6 +7,24 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 
 ## [Unreleased]
 
+### Added
+- **Mahnstufe** je Rechnung (`dunningLevel` 0–3, `lastDunningAt`), gespeichert
+  und per API/Service setzbar. Wird beim Bezahlen (`markPaid`) automatisch
+  zurückgesetzt.
+- **Aktiver Mahnlauf-Vorschlag:** täglicher Hintergrundjob
+  (`DunningProposalJob`) findet überfällige, festgeschriebene Rechnungen und
+  schlägt per Nextcloud-Notification eine Mahnstufe vor — nie automatischer
+  Versand. Der Abstand zwischen den Stufen ist relativ zum individuellen
+  Fälligkeitsdatum jeder Rechnung und über eine neue Einstellung
+  `dunningIntervalDays` konfigurierbar (Default 7 Tage). Ein Feld
+  `dunningNotifiedLevel` verhindert, dass für dieselbe Stufe täglich neu
+  benachrichtigt wird.
+- **OCS-API** (`/ocs/v2.php/apps/rechnungswerk/api/v1/invoices/dunning`) für
+  externe Konsumenten (z. B. ein künftiges Controlling-Dashboard): Rechnungen
+  mit Zahlungs-/Mahnstatus auflisten und die Mahnstufe per
+  `PATCH .../invoices/{id}/dunning` setzen. Erste Route abseits der
+  session-basierten App-eigenen API.
+
 ## [0.5.0] - 2026-08-14
 
 Ein Release für alle, die die App auf Englisch bedienen: Fehlermeldungen kamen
