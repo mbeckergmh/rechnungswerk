@@ -256,6 +256,8 @@ OC.L10N.register(
     "Alle" : "Alle",
     "Offen" : "Offen",
     "Überfällig" : "Überfällig",
+    "Alle offenen" : "Alle offenen",
+    "Mahnung fällig" : "Mahnung fällig",
     "bezahlt am {date}" : "bezahlt am {date}",
     "bezahlt" : "bezahlt",
     "1 Tag überfällig" : "1 Tag überfällig",
@@ -485,6 +487,16 @@ OC.L10N.register(
     "Mahngebühr Stufe 3 (€)" : "Mahngebühr Stufe 3 (€)",
     "Pauschale je Stufe, wird auf dem Mahnschreiben ausgewiesen und zum Rechnungsbetrag addiert. Leer oder 0 bedeutet: keine Gebühr." : "Pauschale je Stufe, wird auf dem Mahnschreiben ausgewiesen und zum Rechnungsbetrag addiert. Leer oder 0 bedeutet: keine Gebühr.",
     "Für diese Rechnung ist keine Mahnstufe gesetzt." : "Für diese Rechnung ist keine Mahnstufe gesetzt.",
-    "Eine bezahlte Rechnung kann nicht gemahnt werden." : "Eine bezahlte Rechnung kann nicht gemahnt werden."
+    "Eine bezahlte Rechnung kann nicht gemahnt werden." : "Eine bezahlte Rechnung kann nicht gemahnt werden.",
+    "Mahnungen" : "Mahnungen",
+    "Keine offenen Posten" : "Keine offenen Posten",
+    "Alle festgeschriebenen Rechnungen sind bezahlt." : "Alle festgeschriebenen Rechnungen sind bezahlt.",
+    "Verzug" : "Verzug",
+    "Stufe {level} fällig" : "Stufe {level} fällig",
+    "Vorgeschlagene Mahnstufe übernehmen" : "Vorgeschlagene Mahnstufe übernehmen",
+    "Übernehmen" : "Übernehmen",
+    "nicht fällig" : "nicht fällig",
+    "1 Tag" : "1 Tag",
+    "{days} Tage" : "{days} Tage"
 },
 "nplurals=2; plural=(n != 1);");

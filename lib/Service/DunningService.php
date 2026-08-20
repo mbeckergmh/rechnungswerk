@@ -99,22 +99,73 @@ class DunningService {
 	 *   erreicht (dunning_level oder dunning_notified_level ist schon so hoch).
 	 */
 	private function proposedLevel(Invoice $invoice, DateTime $today, int $intervalDays): ?int {
-		if ($invoice->getStatus() !== Invoice::STATUS_COMMITTED || $invoice->getPaidAt() !== null) {
-			return null;
-		}
-		$due = $invoice->getDueDate();
-		if ($due === null || $today <= $due) {
-			return null;
-		}
-		$daysOverdue = $due->diff($today)->days;
-		// Alle $intervalDays Tage eine Stufe weiter, gedeckelt auf die höchste
-		// bekannte Stufe (3).
-		$level = min(max(Invoice::DUNNING_LEVELS), intdiv($daysOverdue, max(1, $intervalDays)));
+		$level = $this->scheduledLevel($invoice, $today, $intervalDays);
 		if ($level < 1) {
 			return null;
 		}
 		$baseline = max($invoice->getDunningLevel() ?? 0, $invoice->getDunningNotifiedLevel() ?? 0);
 		return $level > $baseline ? $level : null;
+	}
+
+	/**
+	 * Die Stufe, die der Zeitplan zum Stichtag hergibt — 0, wenn nichts ansteht.
+	 *
+	 * Anders als proposedLevel() ohne Abgleich mit dem bereits Gesetzten: die
+	 * Mahnungs-Uebersicht zeigt damit "faellig waere Stufe 2, gesetzt ist 1",
+	 * waehrend der Hintergrundjob nur ueber echte Neuigkeiten benachrichtigt.
+	 */
+	public function scheduledLevel(Invoice $invoice, DateTime $today, int $intervalDays): int {
+		if ($invoice->getStatus() !== Invoice::STATUS_COMMITTED || $invoice->getPaidAt() !== null) {
+			return 0;
+		}
+		$due = $invoice->getDueDate();
+		if ($due === null || $today <= $due) {
+			return 0;
+		}
+		$daysOverdue = $due->diff($today)->days;
+		// Alle $intervalDays Tage eine Stufe weiter, gedeckelt auf die höchste
+		// bekannte Stufe (3).
+		return min(max(Invoice::DUNNING_LEVELS), intdiv($daysOverdue, max(1, $intervalDays)));
+	}
+
+	/**
+	 * Arbeitsliste fuer die Mahnungs-Uebersicht: alle offenen, faelligen oder
+	 * ueberfaelligen Rechnungen mit Verzugstagen, gesetzter und faelliger
+	 * Mahnstufe. Bewusst inklusive der noch nicht ueberfaelligen offenen
+	 * Posten — wer mahnt, will auch sehen, was als Naechstes faellig wird.
+	 *
+	 * @return list<array<string, mixed>>
+	 */
+	public function worklist(): array {
+		$intervalDays = $this->settingsService->getCompany()->getDunningIntervalDays() ?? self::DEFAULT_INTERVAL_DAYS;
+		$today = new DateTime();
+		$today->setTime(0, 0, 0);
+
+		$rows = [];
+		foreach ($this->invoiceMapper->findByTypes([Invoice::TYPE_INVOICE]) as $invoice) {
+			if ($invoice->getStatus() !== Invoice::STATUS_COMMITTED || $invoice->getPaidAt() !== null) {
+				continue;
+			}
+			$due = $invoice->getDueDate();
+			$daysOverdue = ($due !== null && $due < $today) ? (int)$due->diff($today)->days : 0;
+			$rows[] = [
+				'id' => (int)$invoice->getId(),
+				'number' => $invoice->getNumber(),
+				'recipientName' => $invoice->getRecipientName(),
+				'customerId' => $invoice->getCustomerId(),
+				'totalCents' => (int)$invoice->getTotalCents(),
+				'dueDate' => $due?->format('Y-m-d'),
+				'daysOverdue' => $daysOverdue,
+				'dunningLevel' => (int)($invoice->getDunningLevel() ?? 0),
+				'lastDunningAt' => $invoice->getLastDunningAt()?->format('Y-m-d'),
+				'scheduledLevel' => $this->scheduledLevel($invoice, $today, $intervalDays),
+			];
+		}
+
+		// Dringendstes zuerst: laengster Verzug oben, dann nach Faelligkeit.
+		usort($rows, static fn (array $a, array $b): int
+			=> [$b['daysOverdue'], $a['dueDate'] ?? '9999-12-31'] <=> [$a['daysOverdue'], $b['dueDate'] ?? '9999-12-31']);
+		return $rows;
 	}
 
 	private function markNotified(int $invoiceId, int $level): void {

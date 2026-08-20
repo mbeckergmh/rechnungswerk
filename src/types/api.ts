@@ -219,6 +219,26 @@ export interface Invoice {
 	updatedAt: string | null
 }
 
+/**
+ * Zeile der Mahnungs-Übersicht (GET /dunning): eine offene, festgeschriebene
+ * Rechnung mit Verzug und Mahnstand.
+ */
+export interface DunningEntry {
+	id: number
+	number: string | null
+	recipientName: string | null
+	customerId: number | null
+	totalCents: number
+	dueDate: string | null
+	/** Volle Tage seit Fälligkeit; 0, solange die Rechnung nicht überfällig ist. */
+	daysOverdue: number
+	/** Bereits gesetzte Mahnstufe (0..3). */
+	dunningLevel: number
+	lastDunningAt: string | null
+	/** Stufe, die der Zeitplan hergibt (0..3) — kann über dunningLevel liegen. */
+	scheduledLevel: number
+}
+
 /** Detail response from GET /invoices/{id}: header fields plus line items. */
 export interface InvoiceDetail extends Invoice {
 	items: InvoiceItem[]

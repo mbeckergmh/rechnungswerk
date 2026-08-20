@@ -7,6 +7,7 @@ import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-rou
 import InvoicesView from '@/views/InvoicesView.vue'
 import InvoiceEditorView from '@/views/InvoiceEditorView.vue'
 import QuotesView from '@/views/QuotesView.vue'
+import DunningView from '@/views/DunningView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import TextSnippetsView from '@/views/TextSnippetsView.vue'
 import CustomersView from '@/views/CustomersView.vue'
@@ -23,6 +24,7 @@ const routes: RouteRecordRaw[] = [
 	{ path: '/quotes', name: 'quotes', component: QuotesView },
 	{ path: '/quotes/new', name: 'quote-new', component: InvoiceEditorView },
 	{ path: '/quotes/:id', name: 'quote-detail', component: InvoiceEditorView, props: true },
+	{ path: '/dunning', name: 'dunning', component: DunningView },
 	{ path: '/customers', name: 'customers', component: CustomersView },
 	{ path: '/products', name: 'products', component: ProductsView },
 	{ path: '/text-snippets', name: 'text-snippets', component: TextSnippetsView },

@@ -13,6 +13,7 @@ use OCA\Rechnungswerk\AppInfo\Application;
 use OCA\Rechnungswerk\Exception\IllegalStateException;
 use OCA\Rechnungswerk\Exception\NotFoundException;
 use OCA\Rechnungswerk\Exception\ValidationException;
+use OCA\Rechnungswerk\Service\DunningService;
 use OCA\Rechnungswerk\Service\InvoiceService;
 use OCA\Rechnungswerk\Service\PermissionService;
 use OCP\AppFramework\Controller;
@@ -33,6 +34,7 @@ class InvoiceController extends Controller {
 		IRequest $request,
 		private readonly ?string $userId,
 		private readonly InvoiceService $invoiceService,
+		private readonly DunningService $dunningService,
 		private readonly PermissionService $permissionService,
 		private readonly LoggerInterface $logger,
 	) {
@@ -251,6 +253,18 @@ class InvoiceController extends Controller {
 	 * Klasse, damit der schlanke @/api/client.ts-Wrapper (kein OCS-Envelope)
 	 * unveraendert funktioniert.
 	 */
+	/**
+	 * Arbeitsliste der Mahnungs-Uebersicht: offene Posten mit Verzug,
+	 * gesetzter und faelliger Mahnstufe.
+	 */
+	#[NoAdminRequired]
+	public function dunningList(): DataResponse {
+		if (($r = $this->guardAccess()) !== null) {
+			return $r;
+		}
+		return new DataResponse($this->dunningService->worklist());
+	}
+
 	/**
 	 * Mahnschreiben als PDF. Wie beim Rechnungs-Download per <a download>
 	 * aufgerufen, deshalb ohne CSRF-Token — lesend und zugriffsgeschuetzt.

@@ -20,6 +20,13 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   7 Tage, Minimum 1). Ein Feld
   `dunningNotifiedLevel` verhindert, dass für dieselbe Stufe täglich neu
   benachrichtigt wird.
+- **Eigener Navigationspunkt „Mahnungen"** neben Rechnungen, Angeboten, Kunden,
+  Produkten und Textbausteinen. Zeigt die offenen Posten nach Dringlichkeit
+  sortiert mit Verzugstagen, gesetzter und fälliger Mahnstufe — und macht damit
+  den Vorschlag der Mahnlauf-Logik sichtbar, der bisher nur als Notification
+  auftauchte („Stufe 3 fällig, gesetzt ist 1" plus Knopf „Übernehmen").
+  Ein Zähler in der Navigation nennt nur die Fälle, bei denen wirklich etwas
+  ansteht; bezahlte Rechnungen fallen aus der Liste. Dazu `GET /api/v1/dunning`.
 - **Mahnschreiben als PDF.** Je Rechnung ein Schreiben (keine Sammelmahnung),
   gestaffelt in Zahlungserinnerung / 1. Mahnung / 2. Mahnung mit abgestufter
   Wortwahl — erst die dritte Stufe nennt Konsequenzen. Enthält die offene

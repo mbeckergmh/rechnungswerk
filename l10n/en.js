@@ -256,6 +256,8 @@ OC.L10N.register(
     "Alle" : "All",
     "Offen" : "Open",
     "Überfällig" : "Overdue",
+    "Alle offenen" : "All open",
+    "Mahnung fällig" : "Dunning due",
     "bezahlt am {date}" : "paid on {date}",
     "bezahlt" : "paid",
     "1 Tag überfällig" : "1 day overdue",
@@ -485,6 +487,16 @@ OC.L10N.register(
     "Mahngebühr Stufe 3 (€)" : "Dunning fee level 3 (€)",
     "Pauschale je Stufe, wird auf dem Mahnschreiben ausgewiesen und zum Rechnungsbetrag addiert. Leer oder 0 bedeutet: keine Gebühr." : "Flat fee per level, shown on the dunning letter and added to the invoice total. Empty or 0 means no fee.",
     "Für diese Rechnung ist keine Mahnstufe gesetzt." : "No dunning level is set for this invoice.",
-    "Eine bezahlte Rechnung kann nicht gemahnt werden." : "A paid invoice cannot be dunned."
+    "Eine bezahlte Rechnung kann nicht gemahnt werden." : "A paid invoice cannot be dunned.",
+    "Mahnungen" : "Dunning",
+    "Keine offenen Posten" : "No open items",
+    "Alle festgeschriebenen Rechnungen sind bezahlt." : "All committed invoices are paid.",
+    "Verzug" : "Overdue by",
+    "Stufe {level} fällig" : "Level {level} due",
+    "Vorgeschlagene Mahnstufe übernehmen" : "Apply the proposed dunning level",
+    "Übernehmen" : "Apply",
+    "nicht fällig" : "not due",
+    "1 Tag" : "1 day",
+    "{days} Tage" : "{days} days"
 },
 "nplurals=2; plural=(n != 1);");

@@ -23,6 +23,12 @@
 				<NcAppNavigationItem :name="t('rechnungswerk', 'Angebote')" :to="{ name: 'quotes' }">
 					<template #icon><FileDocumentOutlineIcon :size="20" /></template>
 				</NcAppNavigationItem>
+				<NcAppNavigationItem :name="t('rechnungswerk', 'Mahnungen')" :to="{ name: 'dunning' }">
+					<template #icon><EmailAlertOutlineIcon :size="20" /></template>
+					<template v-if="dunningStore.actionableCount > 0" #counter>
+						<NcCounterBubble type="highlighted">{{ dunningStore.actionableCount }}</NcCounterBubble>
+					</template>
+				</NcAppNavigationItem>
 				<NcAppNavigationItem :name="t('rechnungswerk', 'Kunden')" :to="{ name: 'customers' }">
 					<template #icon><AccountGroupIcon :size="20" /></template>
 				</NcAppNavigationItem>
@@ -57,6 +63,7 @@ import NcAppNavigationItem from '@nextcloud/vue/components/NcAppNavigationItem'
 import NcAppContent from '@nextcloud/vue/components/NcAppContent'
 import NcEmptyContent from '@nextcloud/vue/components/NcEmptyContent'
 import NcLoadingIcon from '@nextcloud/vue/components/NcLoadingIcon'
+import NcCounterBubble from '@nextcloud/vue/components/NcCounterBubble'
 import FileDocumentIcon from 'vue-material-design-icons/FileDocument.vue'
 import FileDocumentOutlineIcon from 'vue-material-design-icons/FileDocumentOutline.vue'
 import AccountGroupIcon from 'vue-material-design-icons/AccountGroup.vue'
@@ -64,15 +71,24 @@ import AccountIcon from 'vue-material-design-icons/Account.vue'
 import PackageVariantIcon from 'vue-material-design-icons/PackageVariant.vue'
 import TextBoxIcon from 'vue-material-design-icons/TextBox.vue'
 import CogIcon from 'vue-material-design-icons/Cog.vue'
+import EmailAlertOutlineIcon from 'vue-material-design-icons/EmailAlertOutline.vue'
 import LockIcon from 'vue-material-design-icons/Lock.vue'
 import { usePermissionStore } from '@/stores/permissionStore'
+import { useDunningStore } from '@/stores/dunningStore'
 
 const store = usePermissionStore()
+const dunningStore = useDunningStore()
 const hasAccess = computed(() => store.info?.hasAccess ?? false)
 const isAdmin = computed(() => store.info?.isAdmin ?? false)
 
-onMounted(() => {
-	store.fetch()
+onMounted(async () => {
+	await store.fetch()
+	// Der Zaehler an "Mahnungen" braucht die Arbeitsliste, aber erst nachdem
+	// der Zugriff geklaert ist — ohne Freigabe antwortet die Route mit 403.
+	// Fehler bleiben still: eine fehlende Zahl darf die App nicht blockieren.
+	if (hasAccess.value) {
+		dunningStore.fetchAll().catch(() => { /* Zaehler bleibt leer */ })
+	}
 })
 </script>
 
