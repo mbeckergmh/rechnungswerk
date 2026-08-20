@@ -20,6 +20,19 @@ Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
   7 Tage, Minimum 1). Ein Feld
   `dunningNotifiedLevel` verhindert, dass für dieselbe Stufe täglich neu
   benachrichtigt wird.
+- **Mahnschreiben als PDF.** Je Rechnung ein Schreiben (keine Sammelmahnung),
+  gestaffelt in Zahlungserinnerung / 1. Mahnung / 2. Mahnung mit abgestufter
+  Wortwahl — erst die dritte Stufe nennt Konsequenzen. Enthält die offene
+  Rechnung mit Verzugstagen, eine konfigurierbare pauschale Mahngebühr je Stufe
+  und eine neue Zahlungsfrist (Einstellungen → Zahlung, Vorgabe 7 Tage).
+  Download über die Rechnungsliste, Versand per E-Mail auf Knopfdruck
+  (`POST /invoices/{id}/dunning/send`) — nie automatisch.
+- **Gemeinsamer Briefkopf** (`LetterLayout`) und gemeinsames Logo-Laden
+  (`CompanyLogo`) für Rechnung, Angebot, Storno und Mahnung. Vorher steckte
+  beides privat im `ZugferdService`; ohne die Extraktion hätte das Mahnschreiben
+  es duplizieren müssen und die Belege wären beim nächsten Logo- oder
+  Farbwechsel auseinandergelaufen. Der sichtbare Rechnungsbeleg ist dabei
+  unverändert geblieben (HTML-Body byteidentisch verifiziert).
 - **Mahnstufen-Spalte in der Rechnungsliste:** offene und überfällige
   Rechnungen bekommen ein Auswahlfeld für die Mahnstufe (–/1/2/3), farblich
   hervorgehoben sobald eine Stufe gesetzt ist, mit dem Datum als Tooltip. Der

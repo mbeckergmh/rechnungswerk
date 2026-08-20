@@ -78,6 +78,14 @@ use OCP\DB\Types;
  * @method void setDefaultPaymentTermDays(?int $defaultPaymentTermDays)
  * @method ?int getDunningIntervalDays()
  * @method void setDunningIntervalDays(?int $dunningIntervalDays)
+ * @method ?int getDunningFee1Cents()
+ * @method void setDunningFee1Cents(?int $dunningFee1Cents)
+ * @method ?int getDunningFee2Cents()
+ * @method void setDunningFee2Cents(?int $dunningFee2Cents)
+ * @method ?int getDunningFee3Cents()
+ * @method void setDunningFee3Cents(?int $dunningFee3Cents)
+ * @method ?int getDunningDueDays()
+ * @method void setDunningDueDays(?int $dunningDueDays)
  * @method ?string getDatevUploadMail()
  * @method void setDatevUploadMail(?string $datevUploadMail)
  * @method int getDatevAutoSend()
@@ -165,6 +173,10 @@ class Settings extends Entity implements JsonSerializable {
 	protected ?int $defaultTaxRateBp = null;
 	protected ?int $defaultPaymentTermDays = null;
 	protected ?int $dunningIntervalDays = null;
+	protected ?int $dunningFee1Cents = null;
+	protected ?int $dunningFee2Cents = null;
+	protected ?int $dunningFee3Cents = null;
+	protected ?int $dunningDueDays = null;
 	protected ?string $datevUploadMail = null;
 	protected ?int $datevAutoSend = null;
 	protected ?string $smtpFromName = null;
@@ -218,6 +230,10 @@ class Settings extends Entity implements JsonSerializable {
 		$this->addType('defaultTaxRateBp', Types::INTEGER);
 		$this->addType('defaultPaymentTermDays', Types::INTEGER);
 		$this->addType('dunningIntervalDays', Types::INTEGER);
+		$this->addType('dunningFee1Cents', Types::INTEGER);
+		$this->addType('dunningFee2Cents', Types::INTEGER);
+		$this->addType('dunningFee3Cents', Types::INTEGER);
+		$this->addType('dunningDueDays', Types::INTEGER);
 		$this->addType('datevUploadMail', Types::STRING);
 		$this->addType('datevAutoSend', Types::SMALLINT);
 		$this->addType('smtpFromName', Types::STRING);
@@ -273,6 +289,10 @@ class Settings extends Entity implements JsonSerializable {
 			'defaultTaxRateBp' => $this->getDefaultTaxRateBp(),
 			'defaultPaymentTermDays' => $this->getDefaultPaymentTermDays(),
 			'dunningIntervalDays' => $this->getDunningIntervalDays(),
+			'dunningFee1Cents' => $this->getDunningFee1Cents(),
+			'dunningFee2Cents' => $this->getDunningFee2Cents(),
+			'dunningFee3Cents' => $this->getDunningFee3Cents(),
+			'dunningDueDays' => $this->getDunningDueDays(),
 			'datevUploadMail' => $this->getDatevUploadMail(),
 			'datevAutoSend' => (bool)$this->getDatevAutoSend(),
 			'smtpFromName' => $this->getSmtpFromName(),

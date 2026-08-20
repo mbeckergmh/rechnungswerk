@@ -245,6 +245,26 @@
 					<input v-model.number="form.dunningIntervalDays" class="rw-input" type="number" min="1" step="1" placeholder="7" />
 				</label>
 				<p class="rw-hint">{{ t('rechnungswerk', 'Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage.') }}</p>
+				<label class="rw-field rw-field--narrow">
+					<span>{{ t('rechnungswerk', 'Zahlungsfrist der Mahnung (Tage)') }}</span>
+					<input v-model.number="form.dunningDueDays" class="rw-input" type="number" min="1" step="1" placeholder="7" />
+				</label>
+				<p class="rw-hint">{{ t('rechnungswerk', 'Neue Frist, die das Mahnschreiben setzt („zahlbar bis“). Nicht zu verwechseln mit dem Zahlungsziel der Rechnung. Leer lassen für 7 Tage.') }}</p>
+				<div class="rw-field-row">
+					<label class="rw-field rw-field--narrow">
+						<span>{{ t('rechnungswerk', 'Mahngebühr Stufe 1 (€)') }}</span>
+						<input v-model="dunningFee1Input" class="rw-input" type="text" inputmode="decimal" placeholder="0,00" />
+					</label>
+					<label class="rw-field rw-field--narrow">
+						<span>{{ t('rechnungswerk', 'Mahngebühr Stufe 2 (€)') }}</span>
+						<input v-model="dunningFee2Input" class="rw-input" type="text" inputmode="decimal" placeholder="0,00" />
+					</label>
+					<label class="rw-field rw-field--narrow">
+						<span>{{ t('rechnungswerk', 'Mahngebühr Stufe 3 (€)') }}</span>
+						<input v-model="dunningFee3Input" class="rw-input" type="text" inputmode="decimal" placeholder="0,00" />
+					</label>
+				</div>
+				<p class="rw-hint">{{ t('rechnungswerk', 'Pauschale je Stufe, wird auf dem Mahnschreiben ausgewiesen und zum Rechnungsbetrag addiert. Leer oder 0 bedeutet: keine Gebühr.') }}</p>
 			</section>
 
 			<!-- Versand -->
@@ -480,7 +500,7 @@ import { useSettingsStore } from '@/stores/settingsStore'
 import { SMALL_BUSINESS_NOTE_DEFAULT, TAX_RATES_BP, type Settings } from '@/types/api'
 import { testSmtp, setLogo, deleteLogo, logoUrl, setArchiveFolder, deleteArchiveFolder, type SettingsSave } from '@/api/settings'
 import { getPermissions, updatePermissions, searchPrincipals, type Principal } from '@/api/permissions'
-import { formatTaxRate } from '@/utils/money'
+import { centsToEuroInput, euroInputToCents, formatTaxRate } from '@/utils/money'
 import { DEFAULT_ACCENT, textColorOn, whiteWouldFail } from '@/utils/colorUtils'
 import { previewInvoiceNumber } from '@/utils/invoiceNumber'
 import { previewFileName } from '@/utils/fileName'
@@ -534,6 +554,13 @@ const searching = ref(false)
 const savingPerms = ref(false)
 const lastQuery = ref('')
 let searchTimer: ReturnType<typeof setTimeout> | null = null
+
+// Mahngebuehren werden in Cent gespeichert, aber in Euro getippt. Eigene Refs
+// statt v-model auf form.*, damit die Eingabe waehrend des Tippens unangetastet
+// bleibt (Zwischenstaende wie "5," sind sonst nicht eingebbar).
+const dunningFee1Input = ref('')
+const dunningFee2Input = ref('')
+const dunningFee3Input = ref('')
 
 const smtpPassword = ref('')
 const imapPassword = ref('')
@@ -674,6 +701,7 @@ function hydrate() {
 		defaultTaxRateBp: s.defaultTaxRateBp,
 		defaultPaymentTermDays: s.defaultPaymentTermDays,
 		dunningIntervalDays: s.dunningIntervalDays,
+		dunningDueDays: s.dunningDueDays,
 		datevUploadMail: s.datevUploadMail,
 		datevAutoSend: s.datevAutoSend,
 		smtpFromName: s.smtpFromName,
@@ -693,6 +721,9 @@ function hydrate() {
 		introDefault: s.introDefault,
 		closingDefault: s.closingDefault,
 	}
+	dunningFee1Input.value = centsToEuroInput(s.dunningFee1Cents)
+	dunningFee2Input.value = centsToEuroInput(s.dunningFee2Cents)
+	dunningFee3Input.value = centsToEuroInput(s.dunningFee3Cents)
 }
 
 function onToggleSmallBusiness(value: boolean) {
@@ -939,6 +970,11 @@ async function onSave() {
 	savingPerms.value = true
 	try {
 		const payload = { ...form.value } as SettingsSave
+		// Die drei Gebuehrenfelder liegen nicht im form-Objekt (Euro-Text vs.
+		// Cent-Zahl), deshalb hier explizit umgerechnet anhaengen.
+		payload.dunningFee1Cents = euroInputToCents(dunningFee1Input.value)
+		payload.dunningFee2Cents = euroInputToCents(dunningFee2Input.value)
+		payload.dunningFee3Cents = euroInputToCents(dunningFee3Input.value)
 		// The logo is managed via its own endpoints (setLogo/deleteLogo), not the
 		// generic save — the server ignores logoFileId here, so don't send it.
 		delete payload.logoFileId

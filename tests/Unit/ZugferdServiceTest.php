@@ -13,6 +13,7 @@ use DateTime;
 use OCA\Rechnungswerk\Db\Invoice;
 use OCA\Rechnungswerk\Db\InvoiceItem;
 use OCA\Rechnungswerk\Db\Settings;
+use OCA\Rechnungswerk\Service\CompanyLogo;
 use OCA\Rechnungswerk\Service\GirocodeService;
 use OCA\Rechnungswerk\Service\ZugferdService;
 use OCP\Files\IRootFolder;
@@ -34,7 +35,7 @@ class ZugferdServiceTest extends TestCase {
 		$tempManager = $this->createMock(ITempManager::class);
 		$tempManager->method('getTempBaseDir')->willReturn(sys_get_temp_dir());
 		$this->service = new ZugferdService(
-			$this->createMock(IRootFolder::class),
+			new CompanyLogo($this->createMock(IRootFolder::class), $this->createMock(LoggerInterface::class)),
 			new GirocodeService($this->createMock(LoggerInterface::class)),
 			$this->createMock(LoggerInterface::class),
 			$tempManager,
@@ -428,7 +429,7 @@ class ZugferdServiceTest extends TestCase {
 		$tempManager->method('getTempBaseDir')->willReturn('/proc/self/nichtanlegbar');
 		$tempManager->method('getTemporaryFolder')->willReturn($perCall);
 		$service = new ZugferdService(
-			$this->createMock(IRootFolder::class),
+			new CompanyLogo($this->createMock(IRootFolder::class), $this->createMock(LoggerInterface::class)),
 			new GirocodeService($this->createMock(LoggerInterface::class)),
 			$this->createMock(LoggerInterface::class),
 			$tempManager,

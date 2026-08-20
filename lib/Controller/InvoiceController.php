@@ -251,6 +251,50 @@ class InvoiceController extends Controller {
 	 * Klasse, damit der schlanke @/api/client.ts-Wrapper (kein OCS-Envelope)
 	 * unveraendert funktioniert.
 	 */
+	/**
+	 * Mahnschreiben als PDF. Wie beim Rechnungs-Download per <a download>
+	 * aufgerufen, deshalb ohne CSRF-Token — lesend und zugriffsgeschuetzt.
+	 */
+	#[NoAdminRequired]
+	#[NoCSRFRequired]
+	public function downloadDunning(int $id, ?int $level = null): Response {
+		if (($r = $this->guardAccess()) !== null) {
+			return $r;
+		}
+		try {
+			$pdf = $this->invoiceService->generateDunningPdf($id, $level);
+			return new DataDownloadResponse($pdf['content'], $pdf['filename'], 'application/pdf');
+		} catch (NotFoundException $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
+		} catch (IllegalStateException $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_CONFLICT);
+		} catch (\Throwable $e) {
+			$this->logger->error('Rechnungswerk: dunning PDF generation failed', ['exception' => $e, 'invoice' => $id]);
+			return new DataResponse(['error' => 'Die PDF-Erzeugung ist fehlgeschlagen.'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/** Mahnschreiben per E-Mail versenden — immer auf Knopfdruck, nie automatisch. */
+	#[NoAdminRequired]
+	public function sendDunning(int $id, string $to = '', string $subject = '', string $body = '', ?int $level = null): DataResponse {
+		if (($r = $this->guardEdit()) !== null) {
+			return $r;
+		}
+		try {
+			$this->invoiceService->sendDunningLetter($id, $to, $subject, $body, $level);
+			return new DataResponse(['sent' => true]);
+		} catch (NotFoundException $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
+		} catch (IllegalStateException $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_CONFLICT);
+		} catch (ValidationException $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
+		} catch (\Throwable $e) {
+			$this->logger->error('Rechnungswerk: dunning mail failed', ['exception' => $e, 'invoice' => $id]);
+			return new DataResponse(['error' => 'Der Versand ist fehlgeschlagen.'], Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	#[NoAdminRequired]
 	public function setDunningLevel(int $id, int $level, ?string $date = null): DataResponse {
 		if (($r = $this->guardEdit()) !== null) {

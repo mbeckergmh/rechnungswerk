@@ -185,6 +185,19 @@ class SettingsService {
 			$days = $data['defaultPaymentTermDays'];
 			$settings->setDefaultPaymentTermDays($days !== null && $days !== '' ? max(0, (int)$days) : null);
 		}
+		// Mahngebuehren je Stufe. 0 ist ein gueltiger Wert ("keine Gebuehr auf
+		// dieser Stufe") und deshalb — anders als beim Mahnabstand — nicht auf
+		// 1 hochgezogen; negative Betraege ergeben keinen Sinn.
+		foreach (['dunningFee1Cents', 'dunningFee2Cents', 'dunningFee3Cents'] as $feeField) {
+			if (array_key_exists($feeField, $data)) {
+				$cents = $data[$feeField];
+				$settings->{'set' . ucfirst($feeField)}($cents !== null && $cents !== '' ? max(0, (int)$cents) : null);
+			}
+		}
+		if (array_key_exists('dunningDueDays', $data)) {
+			$days = $data['dunningDueDays'];
+			$settings->setDunningDueDays($days !== null && $days !== '' ? max(1, (int)$days) : null);
+		}
 		if (array_key_exists('dunningIntervalDays', $data)) {
 			// Anders als defaultPaymentTermDays (0 = sofort faellig, gueltig) ist
 			// ein 0-Tage-Mahnabstand sinnlos — min. 1.

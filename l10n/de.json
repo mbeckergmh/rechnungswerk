@@ -470,7 +470,21 @@
 		"Mahnstufe %1$d vorgeschlagen: Rechnung %2$s ist überfällig": "Mahnstufe %1$d vorgeschlagen: Rechnung %2$s ist überfällig",
 		"Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren.": "Rechnung %1$s hat das Zahlungsziel überschritten. Prüfen und ggf. Mahnstufe setzen oder als bezahlt markieren.",
 		"Mahnabstand (Tage)": "Mahnabstand (Tage)",
-		"Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage.": "Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage."
+		"Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage.": "Abstand zwischen den Mahnstufen, gerechnet ab dem Fälligkeitsdatum der jeweiligen Rechnung. Der tägliche Mahnlauf schlägt danach eine Stufe vor — versendet wird nie automatisch. Leer lassen für 7 Tage.",
+		"Mahnschreiben herunterladen": "Mahnschreiben herunterladen",
+		"Zahlungserinnerung": "Zahlungserinnerung",
+		"1. Mahnung": "1. Mahnung",
+		"2. Mahnung": "2. Mahnung",
+		"{document} als PDF herunterladen": "{document} als PDF herunterladen",
+		"Mahnschreiben": "Mahnschreiben",
+		"Zahlungsfrist der Mahnung (Tage)": "Zahlungsfrist der Mahnung (Tage)",
+		"Neue Frist, die das Mahnschreiben setzt („zahlbar bis“). Nicht zu verwechseln mit dem Zahlungsziel der Rechnung. Leer lassen für 7 Tage.": "Neue Frist, die das Mahnschreiben setzt („zahlbar bis“). Nicht zu verwechseln mit dem Zahlungsziel der Rechnung. Leer lassen für 7 Tage.",
+		"Mahngebühr Stufe 1 (€)": "Mahngebühr Stufe 1 (€)",
+		"Mahngebühr Stufe 2 (€)": "Mahngebühr Stufe 2 (€)",
+		"Mahngebühr Stufe 3 (€)": "Mahngebühr Stufe 3 (€)",
+		"Pauschale je Stufe, wird auf dem Mahnschreiben ausgewiesen und zum Rechnungsbetrag addiert. Leer oder 0 bedeutet: keine Gebühr.": "Pauschale je Stufe, wird auf dem Mahnschreiben ausgewiesen und zum Rechnungsbetrag addiert. Leer oder 0 bedeutet: keine Gebühr.",
+		"Für diese Rechnung ist keine Mahnstufe gesetzt.": "Für diese Rechnung ist keine Mahnstufe gesetzt.",
+		"Eine bezahlte Rechnung kann nicht gemahnt werden.": "Eine bezahlte Rechnung kann nicht gemahnt werden."
 	},
 	"pluralForm": "nplurals=2; plural=(n != 1);"
 }

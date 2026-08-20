@@ -121,6 +121,13 @@
 									@click.stop="downloadPdf(inv.id)">
 									<template #icon><DownloadIcon :size="20" /></template>
 								</NcButton>
+								<NcButton v-if="(inv.dunningLevel ?? 0) > 0"
+									variant="tertiary"
+									:aria-label="t('rechnungswerk', 'Mahnschreiben herunterladen')"
+									:title="dunningPdfTitle(inv)"
+									@click.stop="downloadDunning(inv.id)">
+									<template #icon><EmailAlertOutlineIcon :size="20" /></template>
+								</NcButton>
 							</div>
 						</td>
 					</tr>
@@ -151,9 +158,10 @@ import ClockOutlineIcon from 'vue-material-design-icons/ClockOutline.vue'
 import HelpCircleOutlineIcon from 'vue-material-design-icons/HelpCircleOutline.vue'
 import CheckboxBlankOutlineIcon from 'vue-material-design-icons/CheckboxBlankOutline.vue'
 import CheckboxMarkedIcon from 'vue-material-design-icons/CheckboxMarked.vue'
+import EmailAlertOutlineIcon from 'vue-material-design-icons/EmailAlertOutline.vue'
 import { useInvoiceStore } from '@/stores/invoiceStore'
 import { useSettingsStore } from '@/stores/settingsStore'
-import { downloadInvoicePdf } from '@/api/invoices'
+import { downloadDunningPdf, downloadInvoicePdf } from '@/api/invoices'
 import { INVOICE_STATUS_LABELS, INVOICE_TYPE_LABELS, type Invoice, type InvoiceStatus, type InvoiceType } from '@/types/api'
 import { formatCents } from '@/utils/money'
 
@@ -346,6 +354,21 @@ function openInvoice(id: number) {
 
 function downloadPdf(id: number) {
 	downloadInvoicePdf(id)
+}
+
+const DUNNING_DOC_LABEL: Record<number, string> = {
+	1: t('rechnungswerk', 'Zahlungserinnerung'),
+	2: t('rechnungswerk', '1. Mahnung'),
+	3: t('rechnungswerk', '2. Mahnung'),
+}
+
+const dunningPdfTitle = (inv: Invoice): string =>
+	t('rechnungswerk', '{document} als PDF herunterladen', {
+		document: DUNNING_DOC_LABEL[inv.dunningLevel ?? 0] ?? t('rechnungswerk', 'Mahnschreiben'),
+	})
+
+function downloadDunning(id: number) {
+	downloadDunningPdf(id)
 }
 
 async function duplicate(id: number) {

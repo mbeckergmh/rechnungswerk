@@ -24,8 +24,6 @@ use horstoeko\zugferd\ZugferdProfiles;
 use OCA\Rechnungswerk\Db\Invoice;
 use OCA\Rechnungswerk\Db\InvoiceItem;
 use OCA\Rechnungswerk\Db\Settings;
-use OCP\Files\File;
-use OCP\Files\IRootFolder;
 use OCP\ITempManager;
 use Psr\Log\LoggerInterface;
 
@@ -49,7 +47,7 @@ class ZugferdService {
 	public const SMALL_BUSINESS_NOTE_DEFAULT = 'Gem. § 19 UStG enthält der Rechnungsbetrag keine Umsatzsteuer.';
 
 	public function __construct(
-		private readonly IRootFolder $rootFolder,
+		private readonly CompanyLogo $companyLogo,
 		private readonly GirocodeService $girocodeService,
 		private readonly LoggerInterface $logger,
 		private readonly ITempManager $tempManager,
@@ -632,12 +630,8 @@ class ZugferdService {
 		// Schrift traegt dort nur auf dunklen Toenen, deshalb folgt die Schrift
 		// der Farbe statt umgekehrt (#171). Die Akzentfarbe bleibt unangetastet.
 		$accentText = ColorContrast::textColorOn($accent);
-		$logo = $this->loadLogoDataUri($settings);
+		$logo = $this->companyLogo->dataUri($settings);
 		$e = static fn (?string $s): string => htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
-
-		$company = $e($settings->getCompanyName());
-		$companyAddr = nl2br($e($settings->getCompanyAddress()));
-		$logoHtml = $logo !== null ? '<img src="' . $logo . '" class="logo" alt="">' : '';
 
 		// BG-6 seller contact line in the company block (invoice override → company).
 		[$scPerson, $scPhone, $scEmail] = $this->effectiveSellerContact($invoice, $settings);
@@ -646,8 +640,11 @@ class ZugferdService {
 			$scPhone !== null ? 'Tel.: ' . $e($scPhone) : null,
 			$scEmail !== null ? 'E-Mail: ' . $e($scEmail) : null,
 		]);
-		$sellerContactHtml = $sellerContact !== []
-			? '<div class="company-contact">' . implode(' &middot; ', $sellerContact) . '</div>' : '';
+		// Kopf, Absenderzeile und Fuss teilt sich die Rechnung mit der Mahnung
+		// (LetterLayout) — nur so bleiben die Belege beim naechsten Logo- oder
+		// Farbwechsel gleich aussehend.
+		$headerHtml = LetterLayout::header($settings, $logo, $sellerContact);
+		$senderLineHtml = LetterLayout::senderLine($settings);
 
 		$country = (string)$invoice->getRecipientCountry();
 		$recipientLines = array_filter([
@@ -657,7 +654,7 @@ class ZugferdService {
 			trim((string)$invoice->getRecipientPostalCode() . ' ' . (string)$invoice->getRecipientCity()),
 			($country !== '' && $country !== 'DE') ? $country : null,
 		], static fn ($l) => trim((string)$l) !== '');
-		$recipient = implode('<br>', array_map($e, $recipientLines));
+		$recipientHtml = LetterLayout::recipient(array_map(static fn ($l): string => (string)$l, $recipientLines));
 
 		$isQuote = $invoice->getInvoiceType() === Invoice::TYPE_QUOTE;
 		$title = match ($invoice->getInvoiceType()) {
@@ -862,11 +859,7 @@ class ZugferdService {
 			$notesHtml = '<div class="notes"><strong>Hinweise</strong>' . $noteParas . '</div>';
 		}
 
-		$taxIds = array_filter([
-			($settings->getVatId() ?? '') !== '' ? 'USt-IdNr.: ' . $e($settings->getVatId()) : null,
-			($settings->getTaxNumber() ?? '') !== '' ? 'Steuernummer: ' . $e($settings->getTaxNumber()) : null,
-		]);
-		$footer = $taxIds !== [] ? '<div class="footer">' . implode(' &middot; ', $taxIds) . '</div>' : '';
+		$footer = LetterLayout::footer($settings);
 
 		// Preview marking: diagonal ENTWURF watermark on every page (position:
 		// fixed repeats per page in dompdf) plus an explicit banner — the
@@ -879,29 +872,17 @@ class ZugferdService {
 			. '<div class="draft-banner">' . $draftBannerText . '</div>'
 			: '';
 
+		$sharedCss = LetterLayout::css($accent);
+
 		return <<<HTML
 <!DOCTYPE html>
 <html lang="de"><head><meta charset="UTF-8"><style>
-* { font-family: "DejaVu Sans", sans-serif; }
-body { font-size: 10pt; color: #1a1a1a; margin: 0; }
-.header { overflow: hidden; margin-bottom: 24px; }
-.header .logo { max-height: 70px; max-width: 220px; float: right; }
-.header .company { font-size: 9pt; color: #555; }
-.header .company .name { font-size: 12pt; font-weight: bold; color: {$accent}; }
-.sender-line { font-size: 7pt; color: #777; border-bottom: 1px solid #ccc; padding-bottom: 2px; margin-bottom: 6px; }
-.recipient { margin: 8px 0 24px; }
-h1 { font-size: 18pt; color: {$accent}; margin: 0 0 4px; }
-table.meta { font-size: 9pt; margin-bottom: 16px; }
-table.meta td { padding: 1px 8px 1px 0; }
-table.meta .meta-label { color: #666; }
+{$sharedCss}
 table.items { width: 100%; border-collapse: collapse; margin-bottom: 4px; table-layout: fixed; }
 table.items th { background: {$accent}; color: {$accentText}; text-align: left; padding: 6px 8px; font-size: 9pt; }
 table.items td { padding: 6px 8px; border-bottom: 1px solid #e0e0e0; vertical-align: top; word-wrap: break-word; }
 table.items td.num, table.items th.num { text-align: right; white-space: nowrap; }
 .item-desc { color: #666; font-size: 8.5pt; margin-top: 2px; }
-.company-contact { font-size: 8.5pt; color: #555; margin-top: 2px; }
-.intro { margin: 0 0 14px; font-size: 9.5pt; }
-.intro p { margin: 4px 0; }
 .exempt-note { background: #f5f5f5; padding: 6px 8px; font-weight: bold; }
 .quote-note { background: #f5f5f5; padding: 6px 8px; font-size: 9.5pt; }
 .totals { width: 45%; float: right; margin-top: 8px; }
@@ -913,7 +894,6 @@ table.items td.num, table.items th.num { text-align: right; white-space: nowrap;
 .bank { background: #f5f5f5; padding: 6px 8px; }
 .notes { margin-top: 12px; }
 .notes p { margin: 2px 0; }
-.footer { margin-top: 28px; padding-top: 6px; border-top: 1px solid #ccc; font-size: 8pt; color: #777; text-align: center; }
 .draft-watermark { position: fixed; top: 38%; left: -10%; width: 120%; text-align: center; font-size: 84pt; font-weight: bold; letter-spacing: 14pt; color: #f0d5d5; transform: rotate(-30deg); }
 .draft-banner { background: #fdecec; color: #b93a3a; border: 1px solid #e8b4b4; padding: 6px 10px; margin-bottom: 14px; font-weight: bold; font-size: 10pt; text-align: center; }
 table.girocode { margin-top: 10px; border-collapse: collapse; }
@@ -922,12 +902,9 @@ td.girocode-img img { width: 96px; height: 96px; }
 td.girocode-label { padding-left: 10px; font-size: 8.5pt; color: #555; max-width: 260px; }
 </style></head><body>
 {$watermarkHtml}
-<div class="header">
-  {$logoHtml}
-  <div class="company"><span class="name">{$company}</span><br>{$companyAddr}{$sellerContactHtml}</div>
-</div>
-<div class="sender-line">{$company}</div>
-<div class="recipient">{$recipient}</div>
+{$headerHtml}
+{$senderLineHtml}
+{$recipientHtml}
 <h1>{$title}</h1>
 <table class="meta">{$metaHtml}</table>
 {$introHtml}
@@ -953,34 +930,6 @@ td.girocode-label { padding-left: 10px; font-size: 8.5pt; color: #555; max-width
 {$footer}
 </body></html>
 HTML;
-	}
-
-	private function loadLogoDataUri(Settings $settings): ?string {
-		$fileId = $settings->getLogoFileId();
-		if ($fileId === null) {
-			return null;
-		}
-		try {
-			// Resolve globally, not via getUserFolder(): the central company
-			// settings are owned by the COMPANY_KEY sentinel (not a real user),
-			// and the logo is picked from the admin's files. getById() on the
-			// root folder finds the node regardless of owner.
-			$nodes = $this->rootFolder->getById($fileId);
-			$node = $nodes[0] ?? null;
-			if (!$node instanceof File) {
-				return null;
-			}
-			$mime = $node->getMimeType();
-			// Match the formats the picker allows and dompdf can embed reliably.
-			if (!in_array($mime, ['image/png', 'image/jpeg', 'image/gif'], true)) {
-				return null;
-			}
-			$content = $node->getContent();
-			return 'data:' . $mime . ';base64,' . base64_encode($content);
-		} catch (\Throwable $e) {
-			$this->logger->warning('Rechnungswerk: could not load invoice logo', ['exception' => $e]);
-			return null;
-		}
 	}
 
 	private function sanitizeColor(?string $color): ?string {

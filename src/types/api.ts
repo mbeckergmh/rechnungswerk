@@ -284,6 +284,12 @@ export interface Settings {
 	defaultPaymentTermDays: number | null
 	/** Abstand zwischen den Mahnstufen in Tagen; null = Vorgabe 7 (DunningService). */
 	dunningIntervalDays: number | null
+	/** Pauschale Mahngebuehr je Stufe in Cent; null = keine Gebuehr. */
+	dunningFee1Cents: number | null
+	dunningFee2Cents: number | null
+	dunningFee3Cents: number | null
+	/** Zahlungsfrist, die das Mahnschreiben setzt, in Tagen; null = Vorgabe 7. */
+	dunningDueDays: number | null
 	datevUploadMail: string | null
 	datevAutoSend: boolean
 	smtpFromName: string | null

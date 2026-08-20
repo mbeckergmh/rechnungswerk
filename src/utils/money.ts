@@ -66,3 +66,31 @@ export function formatCents(cents: number | null | undefined): string {
 export function formatTaxRate(bp: number): string {
 	return `${bp / 100} %`
 }
+
+/**
+ * Ganze Cent -> Euro-Eingabestring in deutscher Schreibweise ("500" -> "5,00").
+ * Gegenstueck zu euroInputToCents; null/undefined ergibt ein leeres Feld, damit
+ * "keine Vorgabe" von "0,00" unterscheidbar bleibt.
+ */
+export function centsToEuroInput(cents: number | null | undefined): string {
+	if (cents === null || cents === undefined) {
+		return ''
+	}
+	return formatForInput((cents / 100).toFixed(2))
+}
+
+/**
+ * Euro-Eingabe in deutscher Schreibweise -> ganze Cent. Leere Eingabe ergibt
+ * null ("keine Vorgabe"), nicht 0 — beim Mahngebuehren-Feld sind das zwei
+ * verschiedene Aussagen, auch wenn sie auf dem Schreiben gleich aussehen.
+ */
+export function euroInputToCents(value: string | number | null | undefined): number | null {
+	if (value === null || value === undefined || String(value).trim() === '') {
+		return null
+	}
+	const parsed = parsePrice(value)
+	if (parsed === null) {
+		return null
+	}
+	return Math.round(Number(parsed) * 100)
+}

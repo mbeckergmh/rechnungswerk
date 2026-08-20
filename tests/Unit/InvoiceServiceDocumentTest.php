@@ -18,11 +18,14 @@ use OCA\Rechnungswerk\Db\Settings;
 use OCA\Rechnungswerk\Service\ArchiveService;
 use OCA\Rechnungswerk\Service\CountryService;
 use OCA\Rechnungswerk\Service\DocumentStore;
+use OCA\Rechnungswerk\Service\CompanyLogo;
+use OCA\Rechnungswerk\Service\DunningLetterService;
 use OCA\Rechnungswerk\Service\InvoiceService;
 use OCA\Rechnungswerk\Service\MailService;
 use OCA\Rechnungswerk\Service\NumberFormatMessage;
 use OCA\Rechnungswerk\Service\SettingsService;
 use OCA\Rechnungswerk\Service\ZugferdService;
+use OCP\Files\IRootFolder;
 use OCP\IDBConnection;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -78,6 +81,7 @@ class InvoiceServiceDocumentTest extends TestCase {
 			$this->archiveService,
 			$this->documentStore,
 			$this->mailService,
+			new DunningLetterService(new CompanyLogo($this->createMock(IRootFolder::class), $this->createMock(LoggerInterface::class))),
 			$this->createMock(CountryService::class),
 			$this->db,
 			$this->createMock(LoggerInterface::class),
@@ -202,6 +206,7 @@ class InvoiceServiceDocumentTest extends TestCase {
 			$this->archiveService,
 			$this->documentStore,
 			$this->mailService,
+			new DunningLetterService(new CompanyLogo($this->createMock(IRootFolder::class), $this->createMock(LoggerInterface::class))),
 			$this->createMock(CountryService::class),
 			$this->db,
 			$this->createMock(LoggerInterface::class),
@@ -320,6 +325,7 @@ class InvoiceServiceDocumentTest extends TestCase {
 			$this->archiveService,
 			$this->documentStore,
 			$this->mailService,
+			new DunningLetterService(new CompanyLogo($this->createMock(IRootFolder::class), $this->createMock(LoggerInterface::class))),
 			$this->createMock(CountryService::class),
 			$this->db,
 			$this->createMock(LoggerInterface::class),

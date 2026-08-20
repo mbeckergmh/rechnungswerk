@@ -23,6 +23,8 @@ return [
 		['name' => 'invoice#markPaid',   'url' => '/api/v1/invoices/{id}/pay',   'verb' => 'POST'],
 		['name' => 'invoice#markUnpaid', 'url' => '/api/v1/invoices/{id}/unpay', 'verb' => 'POST'],
 		['name' => 'invoice#setDunningLevel', 'url' => '/api/v1/invoices/{id}/dunning', 'verb' => 'PATCH'],
+		['name' => 'invoice#downloadDunning', 'url' => '/api/v1/invoices/{id}/dunning/pdf',  'verb' => 'GET'],
+		['name' => 'invoice#sendDunning',     'url' => '/api/v1/invoices/{id}/dunning/send', 'verb' => 'POST'],
 		['name' => 'invoice#download', 'url' => '/api/v1/invoices/{id}/pdf',   'verb' => 'GET'],
 		['name' => 'invoice#preview', 'url' => '/api/v1/invoices/{id}/preview', 'verb' => 'GET'],
 		['name' => 'invoice#send',    'url' => '/api/v1/invoices/{id}/send',  'verb' => 'POST'],

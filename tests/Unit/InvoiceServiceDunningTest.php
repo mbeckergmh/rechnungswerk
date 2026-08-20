@@ -18,6 +18,7 @@ use OCA\Rechnungswerk\Exception\ValidationException;
 use OCA\Rechnungswerk\Service\ArchiveService;
 use OCA\Rechnungswerk\Service\CountryService;
 use OCA\Rechnungswerk\Service\DocumentStore;
+use OCA\Rechnungswerk\Service\DunningLetterService;
 use OCA\Rechnungswerk\Service\InvoiceService;
 use OCA\Rechnungswerk\Service\MailService;
 use OCA\Rechnungswerk\Service\NumberFormatMessage;
@@ -53,6 +54,7 @@ class InvoiceServiceDunningTest extends TestCase {
 			$this->createMock(ArchiveService::class),
 			$this->createMock(DocumentStore::class),
 			$this->createMock(MailService::class),
+			$this->createMock(DunningLetterService::class),
 			$this->createMock(CountryService::class),
 			$this->db,
 			$this->createMock(LoggerInterface::class),

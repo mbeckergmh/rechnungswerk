@@ -34,6 +34,7 @@ class InvoiceService {
 		private readonly ArchiveService $archiveService,
 		private readonly DocumentStore $documentStore,
 		private readonly MailService $mailService,
+		private readonly DunningLetterService $dunningLetterService,
 		private readonly CountryService $countryService,
 		private readonly IDBConnection $db,
 		private readonly LoggerInterface $logger,
@@ -1114,6 +1115,59 @@ class InvoiceService {
 			throw $e;
 		}
 		return $this->present($invoice);
+	}
+
+	/**
+	 * Mahnschreiben als PDF zu einer Rechnung. Ohne $level wird die aktuell
+	 * gesetzte Mahnstufe genommen — ohne Stufe gibt es nichts zu mahnen.
+	 *
+	 * Anders als die Rechnung wird das Schreiben bei jedem Abruf neu erzeugt und
+	 * nicht eingefroren: es ist kein GoBD-relevanter Beleg, und der aktuelle
+	 * Stand (Verzugstage, Frist) ist genau das, was der Kunde lesen soll.
+	 *
+	 * @return array{filename: string, content: string}
+	 * @throws NotFoundException
+	 * @throws IllegalStateException
+	 */
+	public function generateDunningPdf(int $id, ?int $level = null): array {
+		$invoice = $this->assertPayable($this->findById($id));
+		$effective = $level ?? (int)($invoice->getDunningLevel() ?? 0);
+		if ($effective < 1) {
+			throw new IllegalStateException($this->l10n->t('Für diese Rechnung ist keine Mahnstufe gesetzt.'));
+		}
+		if ($invoice->getPaidAt() !== null) {
+			throw new IllegalStateException($this->l10n->t('Eine bezahlte Rechnung kann nicht gemahnt werden.'));
+		}
+		$settings = $this->settingsService->getCompany();
+		return [
+			'filename' => $this->dunningLetterService->fileName($invoice, $effective),
+			'content' => $this->dunningLetterService->generatePdf($invoice, $effective, $settings),
+		];
+	}
+
+	/**
+	 * Mahnschreiben per E-Mail an den Kunden senden — auf Knopfdruck, nie
+	 * automatisch (der Hintergrundjob schlaegt nur vor).
+	 *
+	 * @throws NotFoundException
+	 * @throws IllegalStateException
+	 * @throws ValidationException
+	 */
+	public function sendDunningLetter(int $id, string $to, string $subject, string $body, ?int $level = null): void {
+		if (trim($subject) === '') {
+			throw new ValidationException($this->l10n->t('Ein Betreff ist erforderlich.'));
+		}
+		$document = $this->generateDunningPdf($id, $level);
+		$settings = $this->settingsService->getCompany();
+		$this->mailService->sendInvoicePdf(
+			$to,
+			$subject,
+			$body,
+			$document['content'],
+			$document['filename'],
+			$settings,
+			$this->settingsService->getSmtpConfig(),
+		);
 	}
 
 	/**

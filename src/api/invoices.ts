@@ -125,6 +125,25 @@ export const downloadInvoicePdf = (id: number): void => {
 	a.remove()
 }
 
+/** Mahnschreiben zur aktuell gesetzten Mahnstufe (ohne Stufe: 409). */
+export const dunningPdfUrl = (id: number): string =>
+	apiUrl(`/invoices/${id}/dunning/pdf`)
+
+export const downloadDunningPdf = (id: number): void => {
+	const a = document.createElement('a')
+	a.href = dunningPdfUrl(id)
+	a.download = ''
+	a.rel = 'noopener'
+	a.style.display = 'none'
+	document.body.appendChild(a)
+	a.click()
+	a.remove()
+}
+
+/** Mahnschreiben per E-Mail senden — nur auf Knopfdruck. */
+export const sendDunningLetter = (id: number, to: string, subject: string, body: string): Promise<{ sent: boolean }> =>
+	apiPost<{ sent: boolean }, { to: string, subject: string, body: string }>(`/invoices/${id}/dunning/send`, { to, subject, body })
+
 export interface InvoiceSendInput {
 	to: string
 	subject: string
