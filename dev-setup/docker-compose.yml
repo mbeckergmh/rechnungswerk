@@ -1,0 +1,61 @@
+name: nextcloud-dev
+
+services:
+  nextcloud:
+    image: nextcloud:34
+    container_name: nextcloud-dev
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NEXTCLOUD_ADMIN_USER=${ADMIN_USER}
+      - NEXTCLOUD_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - REDIS_HOST=redis
+      # Port MUSS mit rein: ohne ihn baut Nextcloud alle absoluten URLs auf
+      # Port 80 (z. B. den Redirect nach dem Login) und der Browser landet im
+      # Nichts, obwohl die Anmeldung erfolgreich war.
+      - OVERWRITEHOST=<DEV_HOST>:8080
+      - OVERWRITECLIURL=http://<DEV_HOST>:8080
+      - NEXTCLOUD_TRUSTED_DOMAINS=localhost <DEV_HOST> <DEV_HOST>:8080
+      - OVERWRITEPROTOCOL=http
+      - TRUSTED_PROXIES=172.16.0.0/12
+      - PHP_MEMORY_LIMIT=1024M
+      - PHP_UPLOAD_LIMIT=512M
+    volumes:
+      - nc_data:/var/www/html
+      - ./custom_apps:/var/www/html/custom_apps
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  db:
+    image: postgres:17
+    container_name: nextcloud-dev-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: nextcloud-dev-redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+
+volumes:
+  nc_data:
+  db_data:
